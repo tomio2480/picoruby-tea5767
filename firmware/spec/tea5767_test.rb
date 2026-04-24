@@ -9,12 +9,12 @@ class FakeI2C
     @last_write = nil
   end
 
-  def write(address, bytes)
+  def write(address, *bytes)
     @last_write = { address: address, bytes: bytes.dup }
   end
 
   def read(_address, n)
-    @read_data.first(n)
+    @read_data.first(n).pack("C*")
   end
 end
 
