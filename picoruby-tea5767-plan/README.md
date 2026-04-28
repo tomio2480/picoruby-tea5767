@@ -560,4 +560,3 @@ v0.1 は受信のみのため上記後半（送信側）は実装対象外だが
 - Web Serial API 仕様（WICG）：https://wicg.github.io/serial/
 - 函館地方の FM ラジオ周波数ガイド（denpa-data）：https://www.denpa-data.com/i/fm/hokkaido/hakodate.htm
 - 総務省の全国民放 FM 局・ワイド FM 局一覧：https://www.soumu.go.jp/menu_seisaku/ictseisaku/housou_suishin/fm-list.html
-
