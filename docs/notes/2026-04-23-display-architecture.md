@@ -12,7 +12,7 @@ PC ブラウザ上で Web Serial API 経由で Pico の出力を受け取り， 
 
 - Pico 側は USB CDC に JSON Lines を書き出すだけ．PicoRuby で実装する．
 - ブラウザ側は Ruby.wasm．ブートストラップだけ JS で書き，それ以外のロジック・描画は Ruby で書く．
-- 配信は GitHub Pages （HTTPS）を想定．ローカル開発は `localhost` または `file://` で可．
+- 配信は GitHub Pages（HTTPS）を想定．ローカル開発は `http://localhost` を前提とする．`file://` は外部 `.rb` 読み込みで CORS により失敗する．
 
 ## 代替案と棄却理由
 
@@ -27,7 +27,7 @@ PC ブラウザ上で Web Serial API 経由で Pico の出力を受け取り， 
 ## 制約事項
 
 - Web Serial は Chrome 系（Chrome / Edge / Opera）限定．Firefox / Safari は不可．
-- Secure Context が必須．ローカルは `http://localhost` か `file://` で OK．配信は HTTPS．
+- Secure Context が必須．ローカルは `http://localhost`，配信は HTTPS を利用する．
 - ruby.wasm の初期ロードは 3–5 秒程度．デモ前に事前ロード必要．
 
 ## 参照
