@@ -30,7 +30,7 @@
 - 採用率は中程度．事実確認が必要な指摘も混じる
 - reject する場合は一次資料へのリンクを添えて根拠を明示する
 
-### reviewdog (textlint / markdownlint)
+### reviewdog (`textlint` / `markdownlint`)
 
 - caller 側で composite action から呼び出される
 - filter-mode: added が既定．PR 差分のみ対象
@@ -43,7 +43,7 @@
 
 - gemini が「v22 が Active LTS」「v20 が Active LTS」と主張する事例
 - 2026-04-28 時点では v24 が Active LTS．v22 は Maintenance LTS．v20 は EOL 直前
-- 根拠: endoflife.date/nodejs
+- 根拠: <https://endoflife.date/nodejs>
 - 対応: reject ＋ endoflife.date のリンクで反論
 
 ### TEA5767 のレジスタ設定
@@ -64,7 +64,7 @@
 
 - 中央 prh.yml の `JS` パターンに word boundary がない
 - 結果として `JSON` 内の `JS` が substring match で誤検出される
-- 対応: reject ＋ tomio2480/github-workflows#12 を起票して根本対応
+- 対応: reject ＋ `tomio2480/github-workflows#12` を起票して根本対応
 
 ## textlint で繰り返し直す内容
 
@@ -108,7 +108,7 @@
 
 ### caller 参照の既定
 
-- `@main` 既定 → SHA pin 既定と方針が揺れた経緯がある
+- `@main` 既定と SHA pin 既定の間で方針が揺れた経緯あり
 - 直近は SHA pin 既定で確定（picoruby-tea5767 PR #1 のレビューより）
 - Dependabot による追随を効かせる狙いでも SHA pin が筋
 - 中央テンプレも同方針で揃える
@@ -136,15 +136,15 @@
 
 ### 矛盾するレビュー指摘への対応
 
-- 同じ箇所で異なる方向の指摘が来る場合がある
+- 同じ箇所へ異なる方向から指摘が入ることもある
   - 例: フル SHA を書け（前回）→ 80 文字超で読みにくい（今回）
 - 矛盾点を明記して reject ＋過去スレッドへリンク
 
 ### 一括 reject の説明
 
-- reviewdog の指摘が大量に出て個別返信が現実的でない場合がある
+- reviewdog の指摘が大量に出るとき個別返信は現実的でない
 - top-level コメントでカテゴリ別に reject 理由をまとめると効率的
-- カテゴリは prh / 表 caption / alt text / 固有名詞 / 構造維持 など
+- カテゴリは prh / 表 caption / alt text / 固有名詞 / 構造維持など
 
 ## 関連リソース
 

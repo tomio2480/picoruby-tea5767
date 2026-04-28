@@ -113,7 +113,7 @@ TEA5767 の ANT 端子に 75 cm のワイヤを取り付ける．
 
 ## 🗺️ 回路図
 
-![FM スペクトラムモニタの配線図。左側に Raspberry Pi Pico の 40 ピンモジュール、右側に TEA5767 FM 受信モジュールを配置し、I2C SDA・SCL・3V3 電源・GND の 4 本の配線で接続している。TEA5767 の ANT 端子から 75 cm のワイヤアンテナが伸び、Pico の USB ポートは PC ブラウザに接続されて Ruby.wasm が JSON Lines を受け取る。](./schematic.svg)
+![FM スペクトラムモニタの配線図．左側に Raspberry Pi Pico の 40 ピンモジュール，右側に TEA5767 FM 受信モジュールを配置し，I2C SDA・SCL・3V3 電源・GND の 4 本の配線で接続している．TEA5767 の ANT 端子から 75 cm のワイヤアンテナが伸び，Pico の USB ポートは PC ブラウザに接続されて Ruby.wasm が JSON Lines を受け取る．](./schematic.svg)
 
 図 1: FM スペクトラムモニタ配線図（SVG 版）
 
@@ -182,9 +182,10 @@ TEA5767 は 5 バイトの書き込みで設定を指定し，
 高側ヘテロダインを選んだ場合の計算式は次のとおりである．
 
 ```
-N = 4 × (f_RF + f_IF) / f_ref
+N = round(4 × (f_RF + f_IF) / f_ref)
   f_IF  = 225 kHz
   f_ref = 32.768 kHz
+  round は四捨五入（最も近い整数を選ぶ）
 ```
 
 82.5 MHz の場合，N は 10098 となる．
@@ -246,7 +247,7 @@ OLED 時代に必要だった「複数 ch を 1 px に集約する処理」は
 デフォルト表示では不要になるが，
 横幅が 191 px を下回る端末向けに `aggregator.rb` は残しておく．
 
-![ブラウザ UI のレイアウトイメージ。画面上部に地域セレクタと接続ボタン、中央に横長の Canvas によるスペクトラムバーグラフ、その下に検出局テーブル。Canvas は周波数軸 76–95 MHz とカーソル、バー上に函館ローカル局の局名ラベルを重ねて表示する。](./display_layout.svg)
+![ブラウザ UI のレイアウトイメージ．画面上部に地域セレクタと接続ボタン，中央に横長の Canvas によるスペクトラムバーグラフ，その下に検出局テーブル．Canvas は周波数軸 76–95 MHz とカーソル，バー上に函館ローカル局の局名ラベルを重ねて表示する．](./display_layout.svg)
 
 図 2: ブラウザ UI レイアウト概念図
 
@@ -270,7 +271,8 @@ class TEA5767
   end
 
   def self.pll_for(freq_hz)
-    4 * (freq_hz + IF_FREQ_HZ) / XTAL_FREQ_HZ
+    # 四捨五入で最も近い整数を選ぶ（切り捨て / 切り上げではなく round の方針）
+    (4.0 * (freq_hz + IF_FREQ_HZ) / XTAL_FREQ_HZ).round
   end
 
   def tune(freq_hz)
@@ -509,7 +511,7 @@ class TEA5767Test < Minitest::Test
   end
 
   def test_pll_for_76_0MHz
-    assert_equal 9304, TEA5767.pll_for(76_000_000)
+    assert_equal 9305, TEA5767.pll_for(76_000_000)
   end
 end
 ```
