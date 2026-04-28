@@ -1,12 +1,12 @@
 name: Markdown Lint
 
 # 対象リポジトリ picoruby-tea5767 に配置している caller workflow．
-# 中央 tomio2480/github-workflows の composite action（v2 候補）を呼び出して
+# 中央 tomio2480/github-workflows の composite action（v2 release）を呼び出して
 # 本リポジトリの Markdown を reviewdog 経由で PR レビューする．
 #
 # 本 caller は以下のように特定値で固定済みのため，通常は編集不要．
 #   - OWNER 部分: tomio2480（本リポジトリでは tomio2480 を直接利用）
-#   - <SHA> 部分: github-workflows v2 候補 commit
+#   - <SHA> 部分: github-workflows v2 タグが指す merge commit
 # 別リポジトリへ流用する際は OWNER を自分のユーザー名に置換する．
 #
 # 参照先（@ 以降）の選び方：
@@ -40,9 +40,8 @@ jobs:
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Markdown Lint via composite action
-        # v2 候補（merge 前なので feat/composite-action-v2 の最新 SHA）．
-        # github-workflows の v2 release が cut されたら release commit SHA + `# v2` に切り替える．
-        uses: tomio2480/github-workflows/.github/actions/markdown-lint@a342d8e4511a3cbbe13b9a976efedfe1f2aee878 # v2-rc
+        # github-workflows v2（composite action）への参照．SHA は v2 タグが指す merge commit．
+        uses: tomio2480/github-workflows/.github/actions/markdown-lint@8382b97a883560c5e05dbd862babd1c8fc8d8994 # v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # 必要に応じて inputs で上書き可能．詳細は中央リポジトリの README を参照．
