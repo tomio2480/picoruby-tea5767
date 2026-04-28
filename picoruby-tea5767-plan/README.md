@@ -188,8 +188,8 @@ N = 4 × (f_RF + f_IF) / f_ref
 ```
 
 82.5 MHz の場合，N は 10098 となる．
-書き込み 1 バイト目の下位 6 ビットに PLL[13:8] を，
-2 バイト目に PLL[7:0] を置く．
+書き込み 1 バイト目の下位 6 ビットに `PLL[13:8]` を，
+2 バイト目に `PLL[7:0]` を置く．
 3 バイト目以降で高／低側ヘテロダイン選択，
 ステレオ／モノラル，ミュート，水晶使用を指定する．
 
@@ -414,7 +414,7 @@ HBC / STV のワイド FM は函館では運用されていないのでプリセ
 ### ブラウザ側のローカル配信
 
 Ruby.wasm は外部 `.rb` ファイルを fetch で読み込むため，`file://` で開くと CORS により失敗する．
-Ruby 標準のワンライナーで簡易 HTTP サーバを起動して `http://localhost:8000/` で開く．
+Ruby 標準のワンライナーで簡易 HTTP サーバーを起動して `http://localhost:8000/` で開く．
 
 ```
 cd web
@@ -551,6 +551,6 @@ v0.1 は受信のみのため上記後半（送信側）は実装対象外だが
 - Raspberry Pi Pico データシート：https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
 - ruby.wasm（GitHub）：https://github.com/ruby/ruby.wasm
 - Web Serial API 仕様（WICG）：https://wicg.github.io/serial/
-- 北海道函館地方 FM ラジオ周波数ガイド（denpa-data）：https://www.denpa-data.com/i/fm/hokkaido/hakodate.htm
+- 函館地方の FM ラジオ周波数ガイド（denpa-data）：https://www.denpa-data.com/i/fm/hokkaido/hakodate.htm
 - 総務省 全国民放 FM 局・ワイド FM 局一覧：https://www.soumu.go.jp/menu_seisaku/ictseisaku/housou_suishin/fm-list.html
 
