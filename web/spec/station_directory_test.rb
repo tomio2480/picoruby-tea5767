@@ -55,6 +55,11 @@ class StationDirectoryTest < Minitest::Test
     assert_nil dir.lookup("hakodate", 80_751_000)
   end
 
+  def test_50kHzをわずかに超える周波数はヒットしない
+    dir = StationDirectory.new(FIXTURE)
+    assert_nil dir.lookup("hakodate", 80_750_999)
+  end
+
   def test_登録されていない周波数はnil
     dir = StationDirectory.new(FIXTURE)
     assert_nil dir.lookup("hakodate", 82_500_000)

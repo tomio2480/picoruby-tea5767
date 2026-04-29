@@ -14,9 +14,9 @@ class StationDirectory
   end
 
   def lookup(region_key, freq_hz)
-    freq_khz = freq_hz / 1_000
+    tolerance_hz = MATCH_TOLERANCE_KHZ * 1_000
     stations(region_key).find do |s|
-      (s["freq_khz"] - freq_khz).abs <= MATCH_TOLERANCE_KHZ
+      ((s["freq_khz"] * 1_000) - freq_hz).abs <= tolerance_hz
     end
   end
 end
