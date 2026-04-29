@@ -82,4 +82,24 @@ class AggregatorTest < Minitest::Test
 
     assert_equal [], aggregator.dropped_frequencies
   end
+
+  def test_channel_countが0以下ならArgumentErrorを投げる
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 0,  pixel_count: 1) }
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: -1, pixel_count: 1) }
+  end
+
+  def test_pixel_countが0以下ならArgumentErrorを投げる
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 1, pixel_count: 0) }
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 1, pixel_count: -1) }
+  end
+
+  def test_channel_countが整数でなければArgumentErrorを投げる
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 1.5, pixel_count: 1) }
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: "4", pixel_count: 1) }
+  end
+
+  def test_pixel_countが整数でなければArgumentErrorを投げる
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 1, pixel_count: 1.5) }
+    assert_raises(ArgumentError) { Aggregator.new(channel_count: 1, pixel_count: "2") }
+  end
 end

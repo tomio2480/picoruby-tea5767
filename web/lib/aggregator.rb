@@ -2,6 +2,13 @@ class Aggregator
   attr_reader :dropped_frequencies
 
   def initialize(channel_count:, pixel_count:)
+    unless channel_count.is_a?(Integer) && channel_count.positive?
+      raise ArgumentError, "channel_count must be a positive Integer"
+    end
+    unless pixel_count.is_a?(Integer) && pixel_count.positive?
+      raise ArgumentError, "pixel_count must be a positive Integer"
+    end
+
     @channel_count       = channel_count
     @pixel_count         = pixel_count
     @rssi                = Array.new(channel_count, 0)
