@@ -93,7 +93,9 @@
 | 表 / 図 caption の `ja-no-mixed-period` | label 扱いで `．` を付けない慣習 |
 | 画像 alt 内の sentence-length | アクセシビリティのため詳細描述を維持 |
 | 固有名詞の半角全角間スペース | 固有名詞は対象外 |
+| 固有名詞（法令名等）の max-kanji-continuous-len | 分解すると引用として破綻．例：電波法施行規則 |
 | prh の `JS` が `JSON` の substring に hit | 中央辞書の word boundary 不備 |
+| prh の `ユーザ` / `サーバ` が長音化済語の内部に hit | 中央辞書の word boundary 不備 |
 | `**ラベル** ：` の構造 | 構造維持．文字レベル整形のみ |
 
 ## 設計書の整合性確認
@@ -150,6 +152,7 @@
 
 - v2 release: <https://github.com/tomio2480/github-workflows/releases/tag/v2>
 - prh `JS` 誤検出 issue: <https://github.com/tomio2480/github-workflows/issues/12>
+- caller-side allowlist 提案 issue: <https://github.com/tomio2480/github-workflows/issues/14>
 - MD013 方針 issue: <https://github.com/tomio2480/github-workflows/issues/6>
 - fixture 除外 issue: <https://github.com/tomio2480/github-workflows/issues/5>
 - npm pin issue: <https://github.com/tomio2480/github-workflows/issues/7>
