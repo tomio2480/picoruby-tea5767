@@ -5,7 +5,7 @@ class AggregatorTest < Minitest::Test
   def test_ピクセル数がチャンネル数と等しいときは恒等集約になる
     aggregator = Aggregator.new(channel_count: 4, pixel_count: 4)
     [3, 7, 11, 15].each_with_index do |rssi, i|
-      aggregator.update(i, 76_000_000 + i * 100_000, rssi)
+      aggregator.update(i, 76_000_000 + (i * 100_000), rssi)
     end
 
     assert_equal [3, 7, 11, 15], aggregator.pixels
@@ -14,7 +14,7 @@ class AggregatorTest < Minitest::Test
   def test_チャンネル数がピクセル数を上回るときは複数chの最大値で集約される
     aggregator = Aggregator.new(channel_count: 4, pixel_count: 2)
     [3, 7, 11, 15].each_with_index do |rssi, i|
-      aggregator.update(i, 76_000_000 + i * 100_000, rssi)
+      aggregator.update(i, 76_000_000 + (i * 100_000), rssi)
     end
 
     assert_equal [7, 15], aggregator.pixels
