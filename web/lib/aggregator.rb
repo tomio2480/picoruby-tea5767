@@ -1,12 +1,25 @@
 class Aggregator
+  attr_reader :dropped_frequencies
+
   def initialize(channel_count:, pixel_count:)
-    @channel_count = channel_count
-    @pixel_count   = pixel_count
-    @rssi          = Array.new(channel_count, 0)
+    @channel_count       = channel_count
+    @pixel_count         = pixel_count
+    @rssi                = Array.new(channel_count, 0)
+    @dropped_frequencies = []
   end
 
-  def update(channel_index, rssi)
+  def update(channel_index, frequency_hz, rssi)
+    if channel_index < 0 || channel_index >= @channel_count
+      @dropped_frequencies << frequency_hz
+      return self
+    end
     @rssi[channel_index] = rssi
+    self
+  end
+
+  def clear_dropped_frequencies
+    @dropped_frequencies = []
+    self
   end
 
   def pixels
