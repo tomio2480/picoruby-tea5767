@@ -1,0 +1,15 @@
+{
+  "board": {
+    "design_settings": {
+      "defaults": {}
+    }
+  },
+  "meta": {
+    "filename": "fm_spectrum_monitor.kicad_pro",
+    "version": 1
+  },
+  "schematic": {
+    "legacy_lib_list": [],
+    "legacy_lib_dir": ""
+  }
+}
