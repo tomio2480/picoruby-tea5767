@@ -6,7 +6,7 @@ module Protocol
   module_function
 
   def parse(line)
-    return nil if line.nil?
+    return nil unless line.is_a?(String)
     return nil if line.strip.empty?
 
     data = JSON.parse(line)

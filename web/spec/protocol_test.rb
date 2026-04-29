@@ -41,6 +41,13 @@ class ProtocolTest < Minitest::Test
     assert_nil Protocol.parse(nil)
   end
 
+  def test_文字列以外の入力はnilを返す
+    assert_nil Protocol.parse(123)
+    assert_nil Protocol.parse(true)
+    assert_nil Protocol.parse({})
+    assert_nil Protocol.parse([])
+  end
+
   def test_未知のtypeはnilを返す
     assert_nil Protocol.parse('{"t":"unknown","x":1}')
   end
