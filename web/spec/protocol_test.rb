@@ -59,4 +59,44 @@ class ProtocolTest < Minitest::Test
 
     assert_equal "tick", msg["t"]
   end
+
+  def test_tickでiフィールドが欠落していたらnilを返す
+    assert_nil Protocol.parse('{"t":"tick","f":80200000,"rssi":9,"stereo":false}')
+  end
+
+  def test_tickでiが整数でない場合はnilを返す
+    assert_nil Protocol.parse('{"t":"tick","i":"42","f":80200000,"rssi":9,"stereo":false}')
+  end
+
+  def test_tickでfが整数でない場合はnilを返す
+    assert_nil Protocol.parse('{"t":"tick","i":42,"f":80200000.5,"rssi":9,"stereo":false}')
+  end
+
+  def test_tickでrssiが欠落していたらnilを返す
+    assert_nil Protocol.parse('{"t":"tick","i":42,"f":80200000,"stereo":false}')
+  end
+
+  def test_tickでstereoがboolean以外の場合はnilを返す
+    assert_nil Protocol.parse('{"t":"tick","i":42,"f":80200000,"rssi":9,"stereo":"yes"}')
+  end
+
+  def test_doneでpeakが欠落していたらnilを返す
+    assert_nil Protocol.parse('{"t":"done"}')
+  end
+
+  def test_doneでpeakがHashでない場合はnilを返す
+    assert_nil Protocol.parse('{"t":"done","peak":[1,2,3]}')
+  end
+
+  def test_doneでpeak内のフィールドが欠落していたらnilを返す
+    assert_nil Protocol.parse('{"t":"done","peak":{"i":47,"f":80700000}}')
+  end
+
+  def test_errorでmsgが欠落していたらnilを返す
+    assert_nil Protocol.parse('{"t":"error"}')
+  end
+
+  def test_errorでmsgが文字列でない場合はnilを返す
+    assert_nil Protocol.parse('{"t":"error","msg":42}')
+  end
 end

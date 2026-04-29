@@ -2,7 +2,7 @@
 
 ## 背景
 
-Phase 1 として `web/` 下の純ロジック 4 本（Aggregator / Protocol / PeakDetector / StationDirectory）を TDD で実装した．結果は 33 tests / 41 assertions 緑で，手戻りなく完了．この過程で得た技術判断と運用知見を記録する．
+Phase 1 として `web/` 下の純ロジック 4 本（Aggregator / Protocol / PeakDetector / StationDirectory）を TDD で実装した．結果は 48 tests / 56 assertions 緑（PR #3 レビュー対応で Aggregator drop 追跡と Protocol 型検証を追加した後の値）．この過程で得た技術判断と運用知見を記録する．
 
 ## Ruby / minitest 環境の確認結果
 
