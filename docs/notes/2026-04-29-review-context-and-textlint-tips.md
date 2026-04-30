@@ -11,7 +11,9 @@
 - レビュアー別の特徴
 - 典型的な指摘と対応方針
 - textlint で繰り返し直す内容
+- textlint をローカルで実行する手順
 - 設計書の整合性確認
+- レビュー応答の運用ノウハウ
 - 関連リソース
 
 ## レビュアー別の特徴
@@ -97,6 +99,43 @@
 | prh の `JS` が `JSON` の substring に hit | 中央辞書の word boundary 不備 |
 | prh の `ユーザ` / `サーバ` が長音化済語の内部に hit | 中央辞書の word boundary 不備 |
 | `**ラベル** ：` の構造 | 構造維持．文字レベル整形のみ |
+| 全角括弧の内側へのスペース提案（gemini） | `preset-ja-spacing/ja-no-space-around-parentheses` と衝突 |
+
+## textlint をローカルで実行する手順
+
+PR を push する前に中央 textlint 設定と同じ違反を先取りで検出するための手順．
+レビュアーへの差し戻し回数を減らせる．
+
+### prh.yml は実行時 CWD 相対で解決される
+
+`textlint-rule-prh` は `.textlintrc.json` の `rulePaths` を textlint 実行時の CWD から解決する．
+`_tmp_lint/` のような検証用ディレクトリで実行しても，プロジェクトルートに `prh.yml` を一時配置する必要がある．
+
+### 実行例
+
+中央 textlint と同じ preset を `_tmp_lint/node_modules/` に置き，リポジトリルートで実行する．
+
+```bash
+cp _tmp_prh.yml prh.yml
+./_tmp_lint/node_modules/.bin/textlint \
+  --config _tmp_textlintrc.json \
+  docs/notes/対象.md
+rm -f prh.yml
+```
+
+以下の 3 つは `.gitignore` で個別に除外済み．
+
+- `/_tmp_lint/`
+- `/_tmp_prh.yml`
+- `/_tmp_textlintrc.json`
+
+新たに `_tmp_` プレフィクスのファイルを増やす場合は `.gitignore` 側にも追加する．
+コピーした `prh.yml` は実行後に必ず削除する．本リポジトリには直接コミットしない．
+
+### ローカル実行で裏取りできた reject 例
+
+- gemini が提案する「全角括弧の内側にスペース追加」は，中央 textlint の `preset-ja-spacing/ja-no-space-around-parentheses` と衝突する．
+- 元の表記（全角括弧の直内側にスペースを入れない）が中央規律と整合．Phase 1 PR #3 の L5 / L9 でこの根拠で reject した．
 
 ## 設計書の整合性確認
 
