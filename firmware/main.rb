@@ -27,23 +27,26 @@ scanner  = SpectrumScanner.new(
   step_hz:  STEP_HZ,
   count:    CHANNEL_COUNT,
   sleeper:  ->(ms) { sleep_ms(ms) },
+  wait_ms:  TEA5767::PLL_LOCK_WAIT_MS,
 )
 
 loop do
   peak_index = 0
   peak_rssi  = -1
+  peak_freq  = START_HZ
 
   scanner.scan do |i, freq, status|
     emitter.tick(i: i, f: freq, rssi: status[:rssi], stereo: status[:stereo])
     if status[:rssi] > peak_rssi
       peak_rssi  = status[:rssi]
       peak_index = i
+      peak_freq  = freq
     end
   end
 
   emitter.done(peak: {
     "i"    => peak_index,
-    "f"    => START_HZ + STEP_HZ * peak_index,
+    "f"    => peak_freq,
     "rssi" => peak_rssi,
   })
 

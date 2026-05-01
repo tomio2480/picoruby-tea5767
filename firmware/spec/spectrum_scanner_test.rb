@@ -24,7 +24,7 @@ class FakeReceiver
 end
 
 class SpectrumScannerTest < Minitest::Test
-  def build_scanner(count: 3, sleeper: ->(_ms) {})
+  def build_scanner(count: 3, sleeper: ->(_ms) {}, wait_ms: 0)
     @receiver = FakeReceiver.new
     SpectrumScanner.new(
       @receiver,
@@ -32,6 +32,7 @@ class SpectrumScannerTest < Minitest::Test
       step_hz:  100_000,
       count:    count,
       sleeper:  sleeper,
+      wait_ms:  wait_ms,
     )
   end
 
@@ -64,13 +65,29 @@ class SpectrumScannerTest < Minitest::Test
     assert_equal [[0, 76_000_000, 0], [1, 76_100_000, 0]], received
   end
 
-  def test_sleeperはPLL_LOCK_WAIT_MSで各chで呼ばれる
+  def test_sleeperは指定したwait_msで各chで呼ばれる
     sleep_calls = []
     sleeper = ->(ms) { sleep_calls << ms }
-    scanner = build_scanner(count: 3, sleeper: sleeper)
+    scanner = build_scanner(count: 3, sleeper: sleeper, wait_ms: 7)
     scanner.scan
 
-    assert_equal [TEA5767::PLL_LOCK_WAIT_MS] * 3, sleep_calls
+    assert_equal [7, 7, 7], sleep_calls
+  end
+
+  def test_wait_ms未指定時はsleeperが0で呼ばれる
+    sleep_calls = []
+    sleeper = ->(ms) { sleep_calls << ms }
+    @receiver = FakeReceiver.new
+    scanner = SpectrumScanner.new(
+      @receiver,
+      start_hz: 76_000_000,
+      step_hz:  100_000,
+      count:    2,
+      sleeper:  sleeper,
+    )
+    scanner.scan
+
+    assert_equal [0, 0], sleep_calls
   end
 
   def test_scanはブロックなしでも例外にならず完了する
