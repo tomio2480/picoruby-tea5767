@@ -54,10 +54,10 @@ end
 
 | 代替案 | 棄却理由 |
 |---|---|
-| `Fiber.new { ... }.resume` でコールバックを手動 Fiber 化 | ruby.wasm の Fiber API を手動で扱う必要があり複雑．ドキュメントも手薄 |
-| JS 側で `async` 関数を作って Ruby から呼び出す | bootstrap.js が肥大化．両端 Ruby の訴求を損なう |
-| `requestAnimationFrame` ベースで描画を駆動 | 30 ms 間隔より高頻度になりがち．191 ch × 30 ms = 約 6 秒のテンポを保ちたい今回用途に合わない |
-| コールバック全体を JS で書く | 両端 Ruby の訴求を損なう．今回採らない |
+| `Fiber.new { ... }.resume` でコールバックを手動 Fiber 化 | ruby.wasm の Fiber API を手動で扱う必要があり複雑．ドキュメントも手薄． |
+| JS 側で `async` 関数を作って Ruby から呼び出す | bootstrap.js が肥大化．両端 Ruby の訴求を損なう． |
+| `requestAnimationFrame` ベースで描画を駆動 | 30 ms 間隔より高頻度になりがち．191 ch × 30 ms = 約 6 秒のテンポを保ちたい今回用途に合わない． |
+| コールバック全体を JS で書く | 両端 Ruby の訴求を損なう．今回採らない． |
 
 ## 開発時の動作確認チェックリスト
 
