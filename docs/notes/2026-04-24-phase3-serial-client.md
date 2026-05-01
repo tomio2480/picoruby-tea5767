@@ -2,13 +2,18 @@
 
 ## 背景
 
-Phase 3 として `web/lib/serial_client.rb` を実装し，ブラウザから Pico の USB CDC に Web Serial API 経由で接続して JSON Lines を受信できる構造を整えた．モック / 実機切替は `app.rb` に入れ，「モックスキャン開始」と「Pico に接続」の 2 ボタンがどちらも同じハンドラで動く形にした．
+Phase 3 では `web/lib/serial_client.rb` を実装した．
+ブラウザから Pico の USB CDC に Web Serial API 経由で接続し JSON Lines を受信する構造を整えた．
+モック / 実機切替は `app.rb` で行う．
+「モックスキャン開始」と「Pico に接続」の 2 ボタンがどちらも同じハンドラで動く形にした．
 
 ## 実装上の要点
 
 ### Promise は `.call(:then)` チェインで書く
 
-Phase 2 で確認したとおり， `JS::Object#await` は Fiber コンテキストからしか呼べない．`addEventListener` コールバックは Fiber 外なので，Web Serial API のように `requestPort → port.open → getReader → reader.read` とすべて Promise で返ってくる処理は **`.call(:then)` のチェイン** で書くしかない．
+Phase 2 で確認したとおり， `JS::Object#await` は Fiber コンテキストからしか呼べない．
+`addEventListener` コールバックは Fiber 外なので， Promise を返す API は **`.call(:then)` チェイン** で書くしかない．
+Web Serial API は `requestPort → port.open → getReader → reader.read` のすべてが Promise を返すため，全段でこのパターンを使う．
 
 lambda の自己参照パターンで `reader.read` の Promise ループを組み立てる．
 
@@ -43,7 +48,9 @@ end
 
 ### `make_handler` lambda で UI 更新処理を共通化
 
-`MockStream#run` と `SerialClient#run` が同じ「`msg` を yield する」契約なので，UI 更新処理を lambda にまとめて両方から使える．`aggregator` はクロージャで閉じ，ボタン押下のたびに `Aggregator.new` して handler を作り直す．
+`MockStream#run` と `SerialClient#run` は同じ「`msg` を yield する」契約．
+共通契約を活かし， UI 更新処理を lambda にまとめて両方から使う．
+`aggregator` はクロージャで閉じ， ボタン押下のたびに `Aggregator.new` して handler を作り直す．
 
 ```ruby
 make_handler = lambda do |aggregator|

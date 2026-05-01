@@ -21,7 +21,8 @@ class SerialClient
         on_ready.call(self) if on_ready
       end
     end.call(:catch) do |err|
-      message = err[:message].nil? ? err.to_s : err[:message].to_s
+      msg = err[:message].to_s
+      message = (msg.empty? || msg == "undefined") ? err.to_s : msg
       on_error.call(message) if on_error
     end
   end
@@ -32,8 +33,10 @@ class SerialClient
 
     read_next = nil
     read_next = lambda do
+      return if @reader.nil?
       @reader.call(:read).call(:then) do |result|
-        next if result[:done] == true
+        next if @reader.nil?
+        next if result[:done].to_s == "true"
 
         chunk_str = decoder.call(:decode, result[:value]).to_s
         buffer += chunk_str
