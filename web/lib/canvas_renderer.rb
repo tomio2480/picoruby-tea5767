@@ -103,13 +103,12 @@ class CanvasRenderer
       box_w = text_width + 14
       left = x - box_w / 2
 
-      row = 0
+      row = LABEL_ROW_COUNT - 1
       LABEL_ROW_COUNT.times do |r|
         if row_right[r].nil? || left >= row_right[r] + LABEL_HORIZONTAL_GAP
           row = r
           break
         end
-        row = r
       end
       row_right[row] = x + box_w / 2
 

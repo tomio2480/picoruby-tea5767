@@ -14,19 +14,21 @@ class SerialClient
 
     serial.call(:requestPort).call(:then) do |port|
       @port = port
-      options = JS.eval("({ baudRate: #{@baud} })")
+      options = JS.global[:Object].new
+      options[:baudRate] = @baud
       port.call(:open, options).call(:then) do |_|
         @reader = port[:readable].call(:getReader)
         on_ready.call(self) if on_ready
       end
     end.call(:catch) do |err|
-      on_error.call(err.to_s) if on_error
+      message = err[:message].nil? ? err.to_s : err[:message].to_s
+      on_error.call(message) if on_error
     end
   end
 
   def run(&block)
     buffer = ""
-    decoder = JS.eval("new TextDecoder()")
+    decoder = JS.global[:TextDecoder].new
 
     read_next = nil
     read_next = lambda do
@@ -50,5 +52,7 @@ class SerialClient
   def close
     @reader.call(:releaseLock) if @reader
     @port.call(:close) if @port
+    @reader = nil
+    @port   = nil
   end
 end

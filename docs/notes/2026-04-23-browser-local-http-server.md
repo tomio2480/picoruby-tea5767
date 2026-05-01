@@ -19,21 +19,22 @@ protocol schemes: chrome-extension, chrome-untrusted, data, edge, http, https, i
 **ローカル開発時は Ruby 標準の `-run -e httpd` で簡易 HTTP サーバを起動し，`http://localhost:8000/` で開く**運用に統一する．
 
 ```powershell
-cd "C:\Users\tomio\OneDrive\Document\Works\PicoRuby\picoruby-tea5767\web"
+cd web
 ruby -run -e httpd -- . -p 8000
 ```
 
-- 外部 `.rb` ファイルの fetch が CORS を通過する
-- Web Serial API の Secure Context 要件（`http://localhost` は Secure とみなす）も同時に満たせるため，Phase 3 以降の実機接続テストにもそのまま使える
-- 本番配信（GitHub Pages / HTTPS）との挙動差が小さい
+- 外部 `.rb` ファイルの fetch が CORS を通過する．
+- Web Serial API の Secure Context 要件は `http://localhost` を Secure とみなすため同時に満たせる．
+  Phase 3 以降の実機接続テストにもそのまま使える．
+- 本番配信（GitHub Pages / HTTPS）との挙動差が小さい．
 
 ## 代替案と棄却理由
 
 | 代替案 | 棄却理由 |
 |---|---|
-| 全コードをインライン `<script type="text/ruby">` に書き切る | ファイル分割が維持できない．`web/spec/` の minitest で使う `require_relative` との乖離が大きく，保守が難しい |
-| ruby.wasm 独自の VFS にファイルを埋め込む | ビルドパイプラインが必要．YAGNI に反する |
-| `--allow-file-access-from-files` 等のブラウザ起動フラグ | セキュリティ設定の変更で再現性に欠ける．他端末で動かない |
+| 全コードをインライン `<script type="text/ruby">` に書き切る | ファイル分割が維持できない．`web/spec/` の minitest で使う `require_relative` との乖離が大きく，保守が難しい． |
+| ruby.wasm 独自の VFS にファイルを埋め込む | ビルドパイプラインが必要．YAGNI に反する． |
+| `--allow-file-access-from-files` 等のブラウザ起動フラグ | セキュリティ設定の変更で再現性に欠ける．他端末で動かない． |
 
 ## 参照
 
