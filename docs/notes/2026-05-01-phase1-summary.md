@@ -36,31 +36,31 @@ Phase 2 以降のブラウザ層・実機層から共通利用される基盤が
 
 | クラス | ファイル | 責務 |
 |---|---|---|
-| `Aggregator` | [web/lib/aggregator.rb](../../web/lib/aggregator.rb) | `channel_count` 個の RSSI を `pixel_count` 個の表示用配列へ集約．範囲外周波数は drop として記録 |
-| `Protocol` | [web/lib/protocol.rb](../../web/lib/protocol.rb) | TEA5767 firmware の JSON Lines を `{type, payload}` にパース．非文字列・不足フィールド・型不一致は `nil` |
-| `PeakDetector` | [web/lib/peak_detector.rb](../../web/lib/peak_detector.rb) | `pixels` 配列から閾値以上の極大点を抽出．ステートレス module |
-| `StationDirectory` | [web/lib/station_directory.rb](../../web/lib/station_directory.rb) | 函館 5 局のプリセットと周波数マッチ．Hz 単位で ± 50 kHz 境界を判定 |
+| `Aggregator` | [web/lib/aggregator.rb](../../web/lib/aggregator.rb) | `channel_count` 個の RSSI を `pixel_count` 個の表示用配列へ集約．範囲外周波数は drop として記録． |
+| `Protocol` | [web/lib/protocol.rb](../../web/lib/protocol.rb) | TEA5767 firmware の JSON Lines を `{type, payload}` にパース．非文字列・不足フィールド・型不一致は `nil`． |
+| `PeakDetector` | [web/lib/peak_detector.rb](../../web/lib/peak_detector.rb) | `pixels` 配列から閾値以上の極大点を抽出．ステートレス module． |
+| `StationDirectory` | [web/lib/station_directory.rb](../../web/lib/station_directory.rb) | 函館 5 局のプリセットと周波数マッチ．Hz 単位で ± 50 kHz 境界を判定． |
 
 ## 主要な技術判断
 
 詳細は [2026-04-23-phase1-tdd-findings.md](2026-04-23-phase1-tdd-findings.md) を参照．要点を抜粋する．
 
-- **「意図は結果で書く」原則の継承**: `freq_hz / 1_000` の切り捨て比較ではなく Hz 同士で直接比較する形へ修正．Phase 0 で確立した原則（[2026-04-29-phase0-closeout.md](2026-04-29-phase0-closeout.md)）の延長．
-- **Defensive Programming の取捨**: `Array#max` の `|| 0` フォールバックなど，事前ガードが効いていれば実行されない防御コードは可読性のために削除．
-- **`module_function` 採用基準**: ステートレスな純関数は `class` ではなく `module module_function` で表現し， KISS を優先．
-- **`fetch` と `dig` の使い分け**: 利用者の操作ミス（地域未登録）は `dig || []` で静かに扱い，データ構造の破損は `fetch` で Fail Fast．
-- **テストで日本語メソッド名を採用**: `def test_ピクセル数が...` で minitest がそのまま通る．意図が読み取りやすく，コメントを節約できる．
+- **「意図は結果で書く」原則の継承** ： `freq_hz / 1_000` の切り捨て比較ではなく Hz 同士で直接比較する形へ修正．Phase 0 で確立した原則（[2026-04-29-phase0-closeout.md](2026-04-29-phase0-closeout.md)）の延長．
+- **Defensive Programming の取捨** ： `Array#max` の `|| 0` フォールバックなど，事前ガードが効いていれば実行されない防御コードは可読性のために削除．
+- **`module_function` 採用基準** ：ステートレスな純関数は `class` ではなく `module module_function` で表現し， KISS を優先．
+- **`fetch` と `dig` の使い分け** ：利用者の操作ミス（地域未登録）は `dig || []` で静かに扱い，データ構造の破損は `fetch` で Fail Fast．
+- **テストで日本語メソッド名を採用** ： `def test_ピクセル数が...` で minitest がそのまま通る．意図が読み取りやすく，コメントを節約できる．
 
 ## レビュー対応で得た運用知見
 
 詳細は [2026-04-29-review-context-and-textlint-tips.md](2026-04-29-review-context-and-textlint-tips.md) を参照．Phase 1 で確定したカテゴリは次のとおり．
 
-- **gemini-code-assist の繰り返し誤指摘**: 4 種類． Node.js LTS バージョン認識， TEA5767 レジスタビット， PicoRuby `I2C#write` splat ， 全角括弧の内側スペース提案．
-  いずれも一次資料・中央規律で reject ．
-- **CodeRabbit の妥当な指摘採用例**: Aggregator 初期化引数の正整数バリデーション， Protocol 文字列ガード強化，テスト網羅追加．
-- **textlint の reject カテゴリ**: 表 caption ／固有名詞 ／ `prh` 誤 hit など．
+- **gemini-code-assist の繰り返し誤指摘** ： 4 種類．Node.js LTS バージョン認識，TEA5767 レジスタビット，PicoRuby `I2C#write` splat，全角括弧の内側スペース提案．
+  いずれも一次資料・中央規律で reject．
+- **CodeRabbit の妥当な指摘採用例** ： Aggregator 初期化引数の正整数バリデーション， Protocol 文字列ガード強化，テスト網羅追加．
+- **textlint の reject カテゴリ** ：表 caption／固有名詞／`prh` 誤 hit など．
   詳細は [tomio2480/github-workflows#12](https://github.com/tomio2480/github-workflows/issues/12) で根本対応中．
-- **textlint ローカル検証の運用**: `prh.yml` を CWD に一時配置して実行．
+- **textlint ローカル検証の運用** ： `prh.yml` を CWD に一時配置して実行．
   レビューに先回りして指摘を吸う．
 
 ## Phase 2 への申し送り

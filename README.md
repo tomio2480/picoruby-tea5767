@@ -28,11 +28,11 @@ PicoRuby + TEA5767 + Ruby.wasm で作る FM スペクトラムモニタ．函館
 
 | Phase | 内容 | 状態 | 関連 |
 |---|---|---|---|
-| 0 | 設計書 v0.1 ／ 函館局プリセット | 完了 | [#2](https://github.com/tomio2480/picoruby-tea5767/pull/2) |
-| 1 | web 純ロジック 4 本（ Aggregator / Protocol / PeakDetector / StationDirectory ） | 完了 | [#3](https://github.com/tomio2480/picoruby-tea5767/pull/3) ／ [Phase 1 総括](docs/notes/2026-05-01-phase1-summary.md) |
-| 2 | ブラウザ描画 ＋ モックソース結線 | 着手中 | [#4](https://github.com/tomio2480/picoruby-tea5767/pull/4) (Draft) |
-| 3 | Web Serial 接続 ＋ `Aggregator#clear` | 計画中 | [#6](https://github.com/tomio2480/picoruby-tea5767/pull/6) (Draft) |
-| 4 | firmware 3 本（ R2P2 想定） | 計画中 | [#5](https://github.com/tomio2480/picoruby-tea5767/pull/5) (Draft) |
+| 0 | 設計書 v0.1／函館局プリセット | 完了 | [#2](https://github.com/tomio2480/picoruby-tea5767/pull/2) |
+| 1 | web 純ロジック 4 本（Aggregator／Protocol／PeakDetector／StationDirectory） | 完了 | [#3](https://github.com/tomio2480/picoruby-tea5767/pull/3)／[Phase 1 総括](docs/notes/2026-05-01-phase1-summary.md) |
+| 2 | ブラウザ描画＋モックソース結線 | 着手中 | [#4](https://github.com/tomio2480/picoruby-tea5767/pull/4) (Draft) |
+| 3 | Web Serial 接続＋`Aggregator#clear` | 計画中 | [#6](https://github.com/tomio2480/picoruby-tea5767/pull/6) (Draft) |
+| 4 | firmware 3 本（R2P2 想定） | 計画中 | [#5](https://github.com/tomio2480/picoruby-tea5767/pull/5) (Draft) |
 
 ## ライセンス
 
