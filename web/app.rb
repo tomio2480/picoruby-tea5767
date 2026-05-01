@@ -35,6 +35,7 @@ begin
 rescue => e
   status_el[:textContent] = "局データ読み込みエラー: #{e.message}"
   status_el[:className]   = "status error"
+  start_btn[:disabled]    = true
 end
 
 if directory
@@ -105,5 +106,8 @@ if directory
       scan_status_el[:textContent] = "スキャン中エラー: #{e.message}"
       start_btn[:disabled] = false
     end
+  rescue => e
+    scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
+    start_btn[:disabled] = false
   end
 end

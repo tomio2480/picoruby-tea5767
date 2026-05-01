@@ -19,7 +19,7 @@ protocol schemes: chrome-extension, chrome-untrusted, data, edge, http, https, i
 **ローカル開発時は Ruby 標準の `-run -e httpd` で簡易 HTTP サーバを起動し，`http://localhost:8000/` で開く**運用に統一する．
 
 ```powershell
-cd "C:\Users\tomio\OneDrive\Document\Works\PicoRuby\picoruby-tea5767\web"
+cd web
 ruby -run -e httpd -- . -p 8000
 ```
 
