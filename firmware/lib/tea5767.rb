@@ -4,8 +4,11 @@ class TEA5767
   XTAL_FREQ_HZ     = 32_768
   PLL_LOCK_WAIT_MS = 50
 
+  # 目標周波数 freq_hz との実周波数誤差を最小にする PLL 分周比を返す．
+  # 線形関係下ではこの基準は .round と等価．
+  # 議論経緯: docs/notes/2026-04-23-review-log.md §1c
   def self.pll_for(freq_hz)
-    4 * (freq_hz + IF_FREQ_HZ) / XTAL_FREQ_HZ
+    (4.0 * (freq_hz + IF_FREQ_HZ) / XTAL_FREQ_HZ).round
   end
 
   def initialize(i2c)

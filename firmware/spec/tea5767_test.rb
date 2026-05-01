@@ -23,8 +23,8 @@ class TEA5767Test < Minitest::Test
     assert_equal 10098, TEA5767.pll_for(82_500_000)
   end
 
-  def test_pll_for_76_0MHzは9304
-    assert_equal 9304, TEA5767.pll_for(76_000_000)
+  def test_pll_for_76_0MHzは9305
+    assert_equal 9305, TEA5767.pll_for(76_000_000)
   end
 
   def test_pll_for_95_0MHzは11624
