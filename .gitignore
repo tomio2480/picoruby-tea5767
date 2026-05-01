@@ -19,9 +19,7 @@ desktop.ini
 
 # ローカル作業用スクラッチ
 /.scratch/
-/_tmp_lint/
-/_tmp_prh.yml
-/_tmp_textlintrc.json
+/_tmp_*
 
 # Claude Code ローカル設定
 /.claude/
