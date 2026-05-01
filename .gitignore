@@ -19,6 +19,10 @@ desktop.ini
 
 # ローカル作業用スクラッチ
 /.scratch/
+/_tmp_*
+
+# Claude Code ローカル設定
+/.claude/
 
 # 生成物
 /web/build/

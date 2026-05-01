@@ -1,0 +1,155 @@
+:root {
+  --bg: #FAFAF7;
+  --surface: #FFFFFF;
+  --border: #DADADA;
+  --text: #222222;
+  --muted: #666666;
+  --accent: #D94F4F;
+  --ok: #2E7A3A;
+  --warn: #E3B505;
+  --error: #C0392B;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", "Hiragino Kaku Gothic Pro", "Noto Sans CJK JP", sans-serif;
+  max-width: 1040px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+header h1 {
+  font-size: 1.6rem;
+  margin: 0 0 0.2rem;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.75rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+
+.status {
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  font-family: "Consolas", "SF Mono", "Cascadia Code", monospace;
+  font-size: 0.95rem;
+}
+
+.status.loading {
+  background: #F0F0F0;
+  color: var(--muted);
+}
+
+.status.ok {
+  background: #E9F6EC;
+  color: var(--ok);
+}
+
+.status.error {
+  background: #FBE9E7;
+  color: var(--error);
+}
+
+canvas#spectrum {
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  background: #0B1020;
+  border-radius: 4px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+select,
+button {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+}
+
+select {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+button {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: 1px solid #8A2222;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #C73E3E;
+}
+
+button:disabled {
+  background: #AAA;
+  border-color: #888;
+  cursor: not-allowed;
+}
+
+#scan-status {
+  color: var(--muted);
+  font-family: "Consolas", "SF Mono", monospace;
+  font-size: 0.9rem;
+}
+
+#peak-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#peak-table th,
+#peak-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+#peak-table th {
+  background: #F5F5F5;
+  font-weight: bold;
+}
+
+#peak-table tbody tr:nth-child(even) {
+  background: #FAFAFA;
+}
+
+footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
