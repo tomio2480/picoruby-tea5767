@@ -1,17 +1,22 @@
 name: Markdown Lint
 
-# 対象リポジトリの .github/workflows/md-lint.yml として配置する caller workflow．
-# 以下 1 箇所のみ利用者が書き換える：
-#   - `OWNER` を利用する github-workflows のオーナー名に置き換える．
-#     （tomio2480 を直接利用するなら OWNER → tomio2480．自分でフォークした場合は自分のユーザー名）
+# 対象リポジトリ picoruby-tea5767 に配置している caller workflow．
+# 中央 tomio2480/github-workflows の composite action（v2 release）を呼び出して
+# 本リポジトリの Markdown を reviewdog 経由で PR レビューする．
+#
+# 本 caller は以下のように特定値で固定済みのため，通常は編集不要．
+#   - OWNER 部分: tomio2480（本リポジトリでは tomio2480 を直接利用）
+#   - <SHA> 部分: github-workflows v2 タグが指す merge commit
+# 別リポジトリへ流用する際は OWNER を自分のユーザー名に置換する．
 #
 # 参照先（@ 以降）の選び方：
-#   - 既定: `@<SHA> # v1` 形式で SHA pin とバージョンコメントを併記する．
-#     Dependabot が SHA とバージョンの両方を自動追随し，更新は PR で通知される．
-#     本リポジトリはこの方式を採用．
-#   - 代替 1: `@main` — 中央の最新ルール・辞書を即時反映．運用負荷ゼロだが Dependabot の
-#     更新検知は働かない．中央 repo の書き換えが即時反映される点に同意できる場合のみ．
-#   - 代替 2: `@<SHA> # v1.0.0` 形式 — 完全不変．パッチ追随も止めて固定したい場合．
+#   - 既定: `@<SHA> # v2` 形式で SHA pin とバージョンコメントを併記．
+#     Dependabot が SHA とバージョンの両方を自動追随し，更新は PR で通知．
+#   - 代替 1: `@main` — 中央の最新 commit を即時反映．Dependabot 追随なし．
+#   - 代替 2: `@<SHA> # v2.0.0` 形式 — 完全不変．パッチ追随も止めて固定．
+#
+# v1 系（`@v1` / `@v1.0.0` 等）は self-detection bug により動作しません．
+# 必ず v2 以降を参照してください（詳細は中央 repo の README）．
 #
 # 設定ファイル（.markdownlint-cli2.yaml / .textlintrc.json / prh.yml）は
 # 呼び出し側に存在すればそれが優先される．無ければ参照先 commit の標準設定が使われる．
@@ -27,10 +32,19 @@ permissions:
 
 jobs:
   lint:
-    uses: tomio2480/github-workflows/.github/workflows/markdown-lint.yml@e4e121c176567c46399f1f171a91605f1126f04c # v1
-    # 必要に応じて inputs で上書き可能．詳細は中央リポジトリの README を参照．
-    # reusable workflow 側の既定は node-version "24"（Active LTS）．
-    # with:
-    #   node-version: "22"              # Maintenance LTS に下げる例
-    #   markdown-glob: "docs/**/*.md"   # 対象ディレクトリを絞る例
-    #   filter-mode: "nofilter"         # 既存ファイル全体を指摘したい場合
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # actions/checkout v4.3.0
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Markdown Lint via composite action
+        # github-workflows v2（composite action）への参照．SHA は v2 タグが指す merge commit．
+        uses: tomio2480/github-workflows/.github/actions/markdown-lint@8382b97a883560c5e05dbd862babd1c8fc8d8994 # v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          # 必要に応じて inputs で上書き可能．詳細は中央リポジトリの README を参照．
+          # node-version: "22"              # Maintenance LTS に下げる例
+          # markdown-glob: "docs/**/*.md"   # 対象ディレクトリを絞る例
+          # filter-mode: "nofilter"         # 既存ファイル全体を指摘したい場合

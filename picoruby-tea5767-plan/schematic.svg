@@ -1,0 +1,226 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" width="1100" height="720" role="img" aria-labelledby="title desc">
+<title id="title">FM スペクトラムモニタ 配線図</title>
+<desc id="desc">Raspberry Pi Pico の GP4 (SDA) と GP5 (SCL) から I2C バスを引き出し, TEA5767 FM 受信モジュールに接続する. 電源は Pico の 3V3 OUT と GND を共用する. TEA5767 のアンテナ端子に 75cm 程度のワイヤアンテナを接続する. Pico の USB ポートから PC のブラウザ (Ruby.wasm + Web Serial) に JSON Lines を送出する. プルアップ抵抗は TEA5767 モジュール内蔵のものを利用する.</desc>
+<rect x="0" y="0" width="1100" height="720" fill="#FAFAF7"/>
+<text x="550" y="38" font-family="Inter, Arial, sans-serif" font-size="22" fill="#111111" text-anchor="middle" font-weight="bold">FM スペクトラムモニタ 配線図 v0.1</text>
+<text x="550" y="60" font-family="Inter, Arial, sans-serif" font-size="14" fill="#555" text-anchor="middle" font-weight="normal">Raspberry Pi Pico (PicoRuby) + TEA5767 + PC Browser (Ruby.wasm)</text>
+<rect x="80" y="120" width="220" height="520" rx="14" fill="#0F1C2E" stroke="#000" stroke-width="1.5"/>
+<rect x="150" y="102" width="80" height="22" rx="3" fill="#888" stroke="#000"/>
+<text x="190" y="117" font-family="Inter, Arial, sans-serif" font-size="11" fill="#FFF" text-anchor="middle" font-weight="bold">USB</text>
+<text x="190" y="160" font-family="Inter, Arial, sans-serif" font-size="17" fill="#FFF" text-anchor="middle" font-weight="bold">Raspberry Pi Pico</text>
+<text x="190" y="180" font-family="Inter, Arial, sans-serif" font-size="11" fill="#CCC" text-anchor="middle" font-weight="normal">(RP2040, PicoRuby R2P2)</text>
+<rect x="74" y="203" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="214" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">1</text>
+<text x="110" y="214" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP0</text>
+<rect x="74" y="225" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="236" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">2</text>
+<text x="110" y="236" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP1</text>
+<rect x="74" y="247" width="16" height="14" fill="#222222" stroke="#000" stroke-width="1"/>
+<text x="94" y="258" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">3</text>
+<text x="110" y="258" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GND</text>
+<rect x="74" y="269" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="280" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">4</text>
+<text x="110" y="280" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP2</text>
+<rect x="74" y="291" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="302" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">5</text>
+<text x="110" y="302" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP3</text>
+<rect x="74" y="313" width="16" height="14" fill="#E3B505" stroke="#000" stroke-width="1"/>
+<text x="94" y="324" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">6</text>
+<text x="110" y="324" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP4 / SDA</text>
+<rect x="74" y="335" width="16" height="14" fill="#1F7A3A" stroke="#000" stroke-width="1"/>
+<text x="94" y="346" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">7</text>
+<text x="110" y="346" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP5 / SCL</text>
+<rect x="74" y="357" width="16" height="14" fill="#222222" stroke="#000" stroke-width="1"/>
+<text x="94" y="368" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">8</text>
+<text x="110" y="368" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GND</text>
+<rect x="74" y="379" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="390" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">9</text>
+<text x="110" y="390" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP6</text>
+<rect x="74" y="401" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="412" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">10</text>
+<text x="110" y="412" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP7</text>
+<rect x="74" y="423" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="434" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">11</text>
+<text x="110" y="434" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP8</text>
+<rect x="74" y="445" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="456" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">12</text>
+<text x="110" y="456" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP9</text>
+<rect x="74" y="467" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="478" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">13</text>
+<text x="110" y="478" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GND</text>
+<rect x="74" y="489" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="500" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">14</text>
+<text x="110" y="500" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP10</text>
+<rect x="74" y="511" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="522" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">15</text>
+<text x="110" y="522" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP11</text>
+<rect x="74" y="533" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="544" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">16</text>
+<text x="110" y="544" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP12</text>
+<rect x="74" y="555" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="566" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">17</text>
+<text x="110" y="566" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP13</text>
+<rect x="74" y="577" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="588" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">18</text>
+<text x="110" y="588" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GND</text>
+<rect x="74" y="599" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="610" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">19</text>
+<text x="110" y="610" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP14</text>
+<rect x="74" y="621" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="94" y="632" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="start" font-weight="bold">20</text>
+<text x="110" y="632" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="start" font-weight="normal">GP15</text>
+<rect x="290" y="203" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="214" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">40</text>
+<text x="270" y="214" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">VBUS</text>
+<rect x="290" y="225" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="236" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">39</text>
+<text x="270" y="236" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">VSYS</text>
+<rect x="290" y="247" width="16" height="14" fill="#222222" stroke="#000" stroke-width="1"/>
+<text x="286" y="258" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">38</text>
+<text x="270" y="258" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GND</text>
+<rect x="290" y="269" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="280" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">37</text>
+<text x="270" y="280" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">3V3_EN</text>
+<rect x="290" y="291" width="16" height="14" fill="#D63A3A" stroke="#000" stroke-width="1"/>
+<text x="286" y="302" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">36</text>
+<text x="270" y="302" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">3V3(OUT)</text>
+<rect x="290" y="313" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="324" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">35</text>
+<text x="270" y="324" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">ADC_VREF</text>
+<rect x="290" y="335" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="346" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">34</text>
+<text x="270" y="346" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP28</text>
+<rect x="290" y="357" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="368" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">33</text>
+<text x="270" y="368" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">AGND</text>
+<rect x="290" y="379" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="390" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">32</text>
+<text x="270" y="390" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP27</text>
+<rect x="290" y="401" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="412" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">31</text>
+<text x="270" y="412" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP26</text>
+<rect x="290" y="423" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="434" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">30</text>
+<text x="270" y="434" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">RUN</text>
+<rect x="290" y="445" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="456" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">29</text>
+<text x="270" y="456" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP22</text>
+<rect x="290" y="467" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="478" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">28</text>
+<text x="270" y="478" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GND</text>
+<rect x="290" y="489" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="500" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">27</text>
+<text x="270" y="500" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP21</text>
+<rect x="290" y="511" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="522" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">26</text>
+<text x="270" y="522" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP20</text>
+<rect x="290" y="533" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="544" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">25</text>
+<text x="270" y="544" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP19</text>
+<rect x="290" y="555" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="566" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">24</text>
+<text x="270" y="566" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP18</text>
+<rect x="290" y="577" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="588" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">23</text>
+<text x="270" y="588" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GND</text>
+<rect x="290" y="599" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="610" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">22</text>
+<text x="270" y="610" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP17</text>
+<rect x="290" y="621" width="16" height="14" fill="#E0D8B0" stroke="#000" stroke-width="1"/>
+<text x="286" y="632" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">21</text>
+<text x="270" y="632" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#EEE" text-anchor="end" font-weight="normal">GP16</text>
+<rect x="720" y="150" width="280" height="220" rx="8" fill="#2E6E47" stroke="#000" stroke-width="1.5"/>
+<text x="860" y="178" font-family="Inter, Arial, sans-serif" font-size="15" fill="#FFF" text-anchor="middle" font-weight="bold">TEA5767 FM Receiver Module</text>
+<text x="860" y="196" font-family="Inter, Arial, sans-serif" font-size="11" fill="#DDD" text-anchor="middle" font-weight="normal">I2C addr: 0x60</text>
+<rect x="710" y="223" width="18" height="14" fill="#E3B505" stroke="#000"/>
+<text x="738" y="234" font-family="Inter, Arial, sans-serif" font-size="12" fill="#FFF" text-anchor="start" font-weight="bold">SDA</text>
+<rect x="710" y="247" width="18" height="14" fill="#1F7A3A" stroke="#000"/>
+<text x="738" y="258" font-family="Inter, Arial, sans-serif" font-size="12" fill="#FFF" text-anchor="start" font-weight="bold">SCL</text>
+<rect x="710" y="271" width="18" height="14" fill="#222222" stroke="#000"/>
+<text x="738" y="282" font-family="Inter, Arial, sans-serif" font-size="12" fill="#FFF" text-anchor="start" font-weight="bold">GND</text>
+<rect x="710" y="295" width="18" height="14" fill="#D63A3A" stroke="#000"/>
+<text x="738" y="306" font-family="Inter, Arial, sans-serif" font-size="12" fill="#FFF" text-anchor="start" font-weight="bold">VCC</text>
+<rect x="992" y="223" width="18" height="14" fill="#7A3AD6" stroke="#000"/>
+<text x="984" y="234" font-family="Inter, Arial, sans-serif" font-size="11" fill="#FFF" text-anchor="end" font-weight="bold">ANT</text>
+<rect x="992" y="273" width="18" height="14" fill="#3A7AD6" stroke="#000"/>
+<text x="984" y="284" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">L_OUT</text>
+<rect x="992" y="297" width="18" height="14" fill="#3A7AD6" stroke="#000"/>
+<text x="984" y="308" font-family="Inter, Arial, sans-serif" font-size="10" fill="#FFF" text-anchor="end" font-weight="bold">R_OUT</text>
+<text x="984" y="334" font-family="Inter, Arial, sans-serif" font-size="10" fill="#DDD" text-anchor="end" font-weight="normal">(音声出力は v0.1 では未使用)</text>
+<rect x="720" y="430" width="310" height="200" rx="10" fill="#1A1A1A" stroke="#000" stroke-width="1.5"/>
+<rect x="740" y="450" width="270" height="140" rx="4" fill="#0B1020" stroke="#444"/>
+<text x="875" y="472" font-family="Inter, Arial, sans-serif" font-size="12" fill="#FFD166" text-anchor="middle" font-weight="bold">Ruby.wasm (Chrome / Edge)</text>
+<rect x="745.00" y="552" width="4" height="26" fill="#66CCFF"/>
+<rect x="750.45" y="563" width="4" height="15" fill="#66CCFF"/>
+<rect x="755.90" y="547" width="4" height="31" fill="#66CCFF"/>
+<rect x="761.35" y="531" width="4" height="47" fill="#66CCFF"/>
+<rect x="766.80" y="569" width="4" height="9" fill="#66CCFF"/>
+<rect x="772.25" y="568" width="4" height="10" fill="#66CCFF"/>
+<rect x="777.70" y="520" width="4" height="58" fill="#66CCFF"/>
+<rect x="783.15" y="538" width="4" height="40" fill="#66CCFF"/>
+<rect x="788.60" y="566" width="4" height="12" fill="#66CCFF"/>
+<rect x="794.05" y="549" width="4" height="29" fill="#66CCFF"/>
+<rect x="799.50" y="535" width="4" height="43" fill="#66CCFF"/>
+<rect x="804.95" y="569" width="4" height="9" fill="#66CCFF"/>
+<rect x="810.40" y="540" width="4" height="38" fill="#66CCFF"/>
+<rect x="815.85" y="559" width="4" height="19" fill="#66CCFF"/>
+<rect x="821.30" y="570" width="4" height="8" fill="#66CCFF"/>
+<rect x="826.75" y="567" width="4" height="11" fill="#66CCFF"/>
+<rect x="832.20" y="545" width="4" height="33" fill="#66CCFF"/>
+<rect x="837.65" y="546" width="4" height="32" fill="#66CCFF"/>
+<rect x="843.10" y="568" width="4" height="10" fill="#66CCFF"/>
+<rect x="848.55" y="557" width="4" height="21" fill="#66CCFF"/>
+<rect x="854.00" y="567" width="4" height="11" fill="#66CCFF"/>
+<rect x="859.45" y="537" width="4" height="41" fill="#66CCFF"/>
+<rect x="864.90" y="545" width="4" height="33" fill="#66CCFF"/>
+<rect x="870.35" y="569" width="4" height="9" fill="#66CCFF"/>
+<rect x="875.80" y="520" width="4" height="58" fill="#66CCFF"/>
+<rect x="881.25" y="536" width="4" height="42" fill="#66CCFF"/>
+<rect x="886.70" y="565" width="4" height="13" fill="#66CCFF"/>
+<rect x="892.15" y="558" width="4" height="20" fill="#66CCFF"/>
+<rect x="897.60" y="532" width="4" height="46" fill="#66CCFF"/>
+<rect x="903.05" y="532" width="4" height="46" fill="#66CCFF"/>
+<rect x="908.50" y="535" width="4" height="43" fill="#66CCFF"/>
+<rect x="913.95" y="569" width="4" height="9" fill="#66CCFF"/>
+<rect x="919.40" y="536" width="4" height="42" fill="#66CCFF"/>
+<rect x="924.85" y="535" width="4" height="43" fill="#66CCFF"/>
+<rect x="930.30" y="547" width="4" height="31" fill="#66CCFF"/>
+<rect x="935.75" y="569" width="4" height="9" fill="#66CCFF"/>
+<rect x="941.20" y="558" width="4" height="20" fill="#66CCFF"/>
+<rect x="946.65" y="570" width="4" height="8" fill="#66CCFF"/>
+<rect x="952.10" y="537" width="4" height="41" fill="#66CCFF"/>
+<rect x="957.55" y="518" width="4" height="60" fill="#66CCFF"/>
+<rect x="963.00" y="564" width="4" height="14" fill="#66CCFF"/>
+<rect x="968.45" y="554" width="4" height="24" fill="#66CCFF"/>
+<rect x="973.90" y="546" width="4" height="32" fill="#66CCFF"/>
+<rect x="979.35" y="563" width="4" height="15" fill="#66CCFF"/>
+<rect x="984.80" y="538" width="4" height="40" fill="#66CCFF"/>
+<rect x="990.25" y="565" width="4" height="13" fill="#66CCFF"/>
+<rect x="995.70" y="536" width="4" height="42" fill="#66CCFF"/>
+<rect x="1001.15" y="553" width="4" height="25" fill="#66CCFF"/>
+<text x="875" y="610" font-family="Inter, Arial, sans-serif" font-size="11" fill="#CCC" text-anchor="middle">PC Browser (Web Serial)</text>
+<text x="875" y="625" font-family="Inter, Arial, sans-serif" font-size="10" fill="#AAA" text-anchor="middle">JSON Lines → Canvas スペクトラム</text>
+<path d="M 190 102 Q 190 60 550 60 Q 870 60 870 430" fill="none" stroke="#555" stroke-width="3" stroke-linecap="round"/>
+<text x="540" y="50" font-family="Inter, Arial, sans-serif" font-size="11" fill="#555" text-anchor="middle" font-weight="bold">USB ケーブル (Micro-B → Type-A / C)</text>
+<polyline points="74,320 54,320 54,230 710,230" fill="none" stroke="#E3B505" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="74,342 40,342 40,254 710,254" fill="none" stroke="#1F7A3A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="74,364 26,364 26,278 710,278" fill="none" stroke="#222222" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="306,298 400,298 400,302 710,302" fill="none" stroke="#D63A3A" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="1010,230 1028,230 1028,110 1070,110" fill="none" stroke="#7A3AD6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 4"/>
+<text x="1070" y="102" font-family="Inter, Arial, sans-serif" font-size="11" fill="#7A3AD6" text-anchor="end" font-weight="bold">ANT: 75 cm 程度のワイヤ</text>
+<text x="1070" y="124" font-family="Inter, Arial, sans-serif" font-size="10" fill="#7A3AD6" text-anchor="end" font-weight="normal">(λ/4 相当, FM 76–108 MHz)</text>
+<text x="80" y="690" font-family="Inter, Arial, sans-serif" font-size="12" fill="#111111" text-anchor="start" font-weight="bold">配線色の凡例:</text>
+<rect x="180" y="679" width="18" height="12" fill="#D63A3A" stroke="#000"/>
+<text x="203" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">3V3 電源</text>
+<rect x="290" y="679" width="18" height="12" fill="#222222" stroke="#000"/>
+<text x="313" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">GND</text>
+<rect x="400" y="679" width="18" height="12" fill="#E3B505" stroke="#000"/>
+<text x="423" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">I2C SDA</text>
+<rect x="510" y="679" width="18" height="12" fill="#1F7A3A" stroke="#000"/>
+<text x="533" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">I2C SCL</text>
+<rect x="620" y="679" width="18" height="12" fill="#7A3AD6" stroke="#000"/>
+<text x="643" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">アンテナ</text>
+<rect x="730" y="679" width="18" height="12" fill="#555555" stroke="#000"/>
+<text x="753" y="690" font-family="Inter, Arial, sans-serif" font-size="11" fill="#111111" text-anchor="start" font-weight="normal">USB</text>
+<text x="80" y="710" font-family="Inter, Arial, sans-serif" font-size="10.5" fill="#444" text-anchor="start" font-weight="normal">※ プルアップ抵抗は TEA5767 モジュール実装のものを利用. PC 側は Chrome / Edge の Web Serial API を使用.</text>
+</svg>

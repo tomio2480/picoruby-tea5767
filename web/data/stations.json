@@ -1,0 +1,50 @@
+{
+  "regions": {
+    "hakodate": {
+      "name": "函館市",
+      "prefecture": "北海道",
+      "stations": [
+        {
+          "freq_khz": 79400,
+          "name": "FM NORTHWAVE",
+          "kind": "fm",
+          "power_w": 250,
+          "site": "函館",
+          "note": "北海道の FM 専業局"
+        },
+        {
+          "freq_khz": 80700,
+          "name": "FMいるか",
+          "kind": "community",
+          "power_w": 20,
+          "site": "函館",
+          "note": "JOZZ1AA-FM．南茅部 20 W・日浦 5 W の中継局あり"
+        },
+        {
+          "freq_khz": 83600,
+          "name": "NHK-FM 日浦中継局",
+          "kind": "fm",
+          "power_w": 10,
+          "site": "函館市日浦",
+          "note": "NHK-FM 函館の中継"
+        },
+        {
+          "freq_khz": 87000,
+          "name": "NHK-FM 函館",
+          "kind": "fm",
+          "power_w": 250,
+          "site": "函館",
+          "note": "JOVK-FM"
+        },
+        {
+          "freq_khz": 88800,
+          "name": "AIR-G'（FM 北海道）",
+          "kind": "fm",
+          "power_w": 250,
+          "site": "函館",
+          "note": "FM 北海道 函館中継局"
+        }
+      ]
+    }
+  }
+}

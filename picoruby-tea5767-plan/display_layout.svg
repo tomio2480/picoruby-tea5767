@@ -1,0 +1,259 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" width="1000" height="560" role="img" aria-labelledby="t d">
+<title id="t">ブラウザ UI レイアウト</title>
+<desc id="d">Ruby.wasm 製ブラウザ UI の概念図. 画面上部に地域セレクタと Connect ボタン, 中央に横 800 ピクセルの Canvas によるスペクトラムバーグラフ, その下に検出局テーブルを配置する. Canvas は 76 から 95 MHz を 191 チャンネル分のバーで描画し, 函館の主要局 (FM NORTHWAVE 79.4 MHz, FMいるか 80.7 MHz, NHK-FM 日浦 83.6 MHz, NHK-FM 函館 87.0 MHz, AIR-G 88.8 MHz) に局名ラベルを重ねて表示する. スキャン中のチャンネルはハイライトカーソルで示す.</desc>
+<rect width="1000" height="560" fill="#FAFAF7"/>
+<text x="500" y="34" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle">FM スペクトラムモニタ — ブラウザ UI レイアウト案</text>
+<rect x="100" y="60" width="200" height="36" rx="4" fill="#FFFFFF" stroke="#333"/>
+<text x="112" y="84" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="14" fill="#333">地域: 函館市 ▾</text>
+<rect x="320" y="60" width="140" height="36" rx="4" fill="#D94F4F" stroke="#8A2222"/>
+<text x="390" y="84" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="14" font-weight="bold" fill="#FFFFFF" text-anchor="middle">Connect</text>
+<text x="480" y="84" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="13" fill="#2E7A3A">● 接続中: COM3 @ 115200bps</text>
+<text x="740" y="84" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="13" fill="#555">スキャン: 46/191 ch</text>
+<rect x="100" y="150" width="800" height="260" fill="#0B1020" stroke="#222" stroke-width="2"/>
+<line x1="100" y1="178" x2="900" y2="178" stroke="#666" stroke-width="1"/>
+<line x1="100.0" y1="174" x2="100.0" y2="182" stroke="#AAA" stroke-width="1"/>
+<text x="100.0" y="170" font-family="monospace" font-size="13" fill="#DDD" text-anchor="middle">76 MHz</text>
+<line x1="267.5392670157068" y1="174" x2="267.5392670157068" y2="182" stroke="#AAA" stroke-width="1"/>
+<text x="267.5392670157068" y="170" font-family="monospace" font-size="13" fill="#DDD" text-anchor="middle">80 MHz</text>
+<line x1="476.9633507853403" y1="174" x2="476.9633507853403" y2="182" stroke="#AAA" stroke-width="1"/>
+<text x="476.9633507853403" y="170" font-family="monospace" font-size="13" fill="#DDD" text-anchor="middle">85 MHz</text>
+<line x1="686.3874345549738" y1="174" x2="686.3874345549738" y2="182" stroke="#AAA" stroke-width="1"/>
+<text x="686.3874345549738" y="170" font-family="monospace" font-size="13" fill="#DDD" text-anchor="middle">90 MHz</text>
+<line x1="895.8115183246073" y1="174" x2="895.8115183246073" y2="182" stroke="#AAA" stroke-width="1"/>
+<text x="895.8115183246073" y="170" font-family="monospace" font-size="13" fill="#DDD" text-anchor="middle">95 MHz</text>
+<rect x="100.00" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="104.19" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="108.38" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="112.57" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="116.75" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="120.94" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="125.13" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="129.32" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="133.51" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="137.70" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="141.88" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="146.07" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="150.26" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="154.45" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="158.64" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="162.83" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="167.02" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="171.20" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="175.39" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="179.58" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="183.77" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="187.96" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="192.15" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="196.34" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="200.52" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="204.71" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="208.90" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="213.09" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="217.28" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="221.47" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="225.65" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="229.84" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="234.03" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="238.22" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="242.41" y="202.13" width="3.59" height="197.87" fill="#66CCFF"/>
+<rect x="246.60" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="250.79" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="254.97" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="259.16" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="263.35" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="267.54" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="271.73" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="275.92" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="280.10" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="284.29" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="288.48" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="292.67" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="296.86" y="188.00" width="3.59" height="212.00" fill="#66CCFF"/>
+<rect x="301.05" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="305.24" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="309.42" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="313.61" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="317.80" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="321.99" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="326.18" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="330.37" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="334.55" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="338.74" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="342.93" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="347.12" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="351.31" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="355.50" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="359.69" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="363.87" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="368.06" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="372.25" y="315.20" width="3.59" height="84.80" fill="#FFD166"/>
+<rect x="376.44" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="380.63" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="384.82" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="389.01" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="393.19" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="397.38" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="401.57" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="405.76" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="409.95" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="414.14" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="418.32" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="422.51" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="426.70" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="430.89" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="435.08" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="439.27" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="443.46" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="447.64" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="451.83" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="456.02" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="460.21" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="464.40" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="468.59" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="472.77" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="476.96" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="481.15" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="485.34" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="489.53" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="493.72" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="497.91" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="502.09" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="506.28" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="510.47" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="514.66" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="518.85" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="523.04" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="527.23" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="531.41" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="535.60" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="539.79" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="543.98" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="548.17" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="552.36" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="556.54" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="560.73" y="188.00" width="3.59" height="212.00" fill="#66CCFF"/>
+<rect x="564.92" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="569.11" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="573.30" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="577.49" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="581.68" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="585.86" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="590.05" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="594.24" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="598.43" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="602.62" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="606.81" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="610.99" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="615.18" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="619.37" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="623.56" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="627.75" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="631.94" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="636.13" y="216.27" width="3.59" height="183.73" fill="#66CCFF"/>
+<rect x="640.31" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="644.50" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="648.69" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="652.88" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="657.07" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="661.26" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="665.45" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="669.63" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="673.82" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="678.01" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="682.20" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="686.39" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="690.58" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="694.76" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="698.95" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="703.14" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="707.33" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="711.52" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="715.71" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="719.90" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="724.08" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="728.27" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="732.46" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="736.65" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="740.84" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="745.03" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="749.21" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="753.40" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="757.59" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="761.78" y="286.93" width="3.59" height="113.07" fill="#66CCFF"/>
+<rect x="765.97" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="770.16" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="774.35" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="778.53" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="782.72" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="786.91" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="791.10" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="795.29" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="799.48" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="803.66" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="807.85" y="272.80" width="3.59" height="127.20" fill="#66CCFF"/>
+<rect x="812.04" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="816.23" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="820.42" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="824.61" y="400.00" width="3.59" height="0.00" fill="#66CCFF"/>
+<rect x="828.80" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="832.98" y="329.33" width="3.59" height="70.67" fill="#66CCFF"/>
+<rect x="837.17" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="841.36" y="371.73" width="3.59" height="28.27" fill="#66CCFF"/>
+<rect x="845.55" y="315.20" width="3.59" height="84.80" fill="#66CCFF"/>
+<rect x="849.74" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="853.93" y="258.67" width="3.59" height="141.33" fill="#66CCFF"/>
+<rect x="858.12" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="862.30" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="866.49" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="870.68" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="874.87" y="357.60" width="3.59" height="42.40" fill="#66CCFF"/>
+<rect x="879.06" y="301.07" width="3.59" height="98.93" fill="#66CCFF"/>
+<rect x="883.25" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="887.43" y="385.87" width="3.59" height="14.13" fill="#66CCFF"/>
+<rect x="891.62" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<rect x="895.81" y="343.47" width="3.59" height="56.53" fill="#66CCFF"/>
+<line x1="374.05" y1="150" x2="374.05" y2="410" stroke="#FFD166" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="192.20" y="180.13" width="104" height="18" rx="2" fill="#FFFFFF" fill-opacity="0.9" stroke="#222"/>
+<text x="244.20" y="193.13" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#111" text-anchor="middle">FM NORTHWAVE 79.4</text>
+<rect x="246.65" y="166.00" width="104" height="18" rx="2" fill="#FFFFFF" fill-opacity="0.9" stroke="#222"/>
+<text x="298.65" y="179.00" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#111" text-anchor="middle">FMいるか 80.7</text>
+<rect x="368.12" y="232.80" width="104" height="18" rx="2" fill="#FFFFFF" fill-opacity="0.9" stroke="#222"/>
+<text x="420.12" y="245.80" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#111" text-anchor="middle">NHK-FM 日浦 83.6</text>
+<rect x="510.53" y="166.00" width="104" height="18" rx="2" fill="#FFFFFF" fill-opacity="0.9" stroke="#222"/>
+<text x="562.53" y="179.00" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#111" text-anchor="middle">NHK-FM 函館 87.0</text>
+<rect x="585.92" y="194.27" width="104" height="18" rx="2" fill="#FFFFFF" fill-opacity="0.9" stroke="#222"/>
+<text x="637.92" y="207.27" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#111" text-anchor="middle">AIR-G' 88.8</text>
+<text x="374.05" y="144.00" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#8A5F00" text-anchor="middle">スキャン中</text>
+<text x="100" y="426" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="11" fill="#555">Canvas 800 × 260 px / 191 ch @ 100 kHz / 1 ch ≒ 4.2 px</text>
+<text x="100" y="444" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="14" font-weight="bold" fill="#222">検出局テーブル</text>
+<rect x="100" y="450" width="800" height="24" fill="#EEE" stroke="#333"/>
+<text x="108" y="466" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">周波数</text>
+<text x="268" y="466" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">RSSI</text>
+<text x="368" y="466" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">局名</text>
+<text x="668" y="466" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">種別</text>
+<text x="788" y="466" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">Stereo</text>
+<rect x="100" y="474" width="800" height="22" fill="#FFFFFF" stroke="#CCC"/>
+<text x="108" y="489" font-family="monospace" font-size="12" fill="#222">80.7 MHz</text>
+<text x="268" y="489" font-family="monospace" font-size="12" fill="#222">15/15</text>
+<text x="368" y="489" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">FMいるか</text>
+<text x="668" y="489" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">コミュニティ</text>
+<text x="788" y="489" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">○</text>
+<rect x="100" y="496" width="800" height="22" fill="#F5F5F5" stroke="#CCC"/>
+<text x="108" y="511" font-family="monospace" font-size="12" fill="#222">87.0 MHz</text>
+<text x="268" y="511" font-family="monospace" font-size="12" fill="#222">15/15</text>
+<text x="368" y="511" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">NHK-FM 函館</text>
+<text x="668" y="511" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">FM</text>
+<text x="788" y="511" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">○</text>
+<rect x="100" y="518" width="800" height="22" fill="#FFFFFF" stroke="#CCC"/>
+<text x="108" y="533" font-family="monospace" font-size="12" fill="#222">79.4 MHz</text>
+<text x="268" y="533" font-family="monospace" font-size="12" fill="#222">14/15</text>
+<text x="368" y="533" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">FM NORTHWAVE</text>
+<text x="668" y="533" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">FM</text>
+<text x="788" y="533" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">○</text>
+<rect x="100" y="540" width="800" height="22" fill="#F5F5F5" stroke="#CCC"/>
+<text x="108" y="555" font-family="monospace" font-size="12" fill="#222">88.8 MHz</text>
+<text x="268" y="555" font-family="monospace" font-size="12" fill="#222">13/15</text>
+<text x="368" y="555" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">AIR-G'</text>
+<text x="668" y="555" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">FM</text>
+<text x="788" y="555" font-family="Noto Sans CJK JP, Arial, sans-serif" font-size="12" fill="#222">○</text>
+</svg>
