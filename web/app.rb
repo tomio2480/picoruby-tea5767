@@ -6,6 +6,10 @@ STEP_HZ           = 100_000
 CHANNEL_COUNT     = 191
 PEAK_THRESHOLD    = 10
 
+def html_escape(s)
+  s.to_s.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;").gsub('"', "&quot;").gsub("'", "&#39;")
+end
+
 document         = JS.global[:document]
 canvas           = document.getElementById("spectrum")
 status_el        = document.getElementById("status")
@@ -94,7 +98,7 @@ if directory
 
         rows = named.sort_by { |p| -p[:rssi] }.map do |p|
           mhz = format("%.1f", p[:freq_hz] / 1_000_000.0)
-          "<tr><td>#{mhz} MHz</td><td>#{p[:rssi]}/15</td><td>#{p[:name]}</td></tr>"
+          "<tr><td>#{mhz} MHz</td><td>#{p[:rssi]}/15</td><td>#{html_escape(p[:name])}</td></tr>"
         end.join
         peak_tbody_el[:innerHTML] = rows.empty? ? "<tr><td colspan=\"3\">検出なし</td></tr>" : rows
         scan_status_el[:textContent] = "完了 (#{named.size} 局検出)"

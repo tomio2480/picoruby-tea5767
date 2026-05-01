@@ -21,10 +21,10 @@ e.g. <script type="text/ruby" data-eval="async">puts :hello</script>
 
 1. **トップレベルのスクリプトは `data-eval="async"` を必ず付ける**
    - 例：`<script type="text/ruby" data-eval="async" src="./app.rb"></script>`
-   - これでスクリプト本体の `.await` が使える（fetch → JSON 読み込みなど）
+   - これでスクリプト本体の `.await` が使える（fetch → JSON 読み込みなど）．
 2. **`addEventListener` などのコールバック内では await を使わない**
-   - コールバックは JS のイベントループから同期呼び出しされ，Fiber コンテキストの外に出る
-   - コールバック内で非同期待機が必要な場合は，**`setTimeout` の再帰呼び出し**で時間差の処理を組み立てる
+   - コールバックは JS のイベントループから同期呼び出しされ，Fiber コンテキストの外に出る．
+   - コールバック内で非同期待機が必要な場合は，**`setTimeout` の再帰呼び出し**で時間差の処理を組み立てる．
 
 ### setTimeout 再帰パターン
 
@@ -33,7 +33,7 @@ class MockStream
   def run(&block)
     step = nil
     step = lambda do |i|
-      if i >= total
+      if i >= rssi.size
         block.call({"t" => "done", ...})
         next
       end
@@ -46,9 +46,9 @@ class MockStream
 end
 ```
 
-- `run` は即時 return する（run 本体はスケジューリングしかしない）
-- 各 tick の処理は setTimeout のコールバック内で逐次実行される
-- Ruby の Proc は `JS.global.call(:setTimeout, ...)` で自動的に JS function に変換される
+- `run` は即時 return する（run 本体はスケジューリングしかしない）．
+- 各 tick の処理は setTimeout のコールバック内で逐次実行される．
+- Ruby の Proc は `JS.global.call(:setTimeout, ...)` で自動的に JS function に変換される．
 
 ## 代替案と棄却理由
 
