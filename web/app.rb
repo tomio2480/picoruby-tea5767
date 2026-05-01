@@ -62,7 +62,6 @@ if directory
     stream = MockStream.new(source, start_hz: START_HZ, step_hz: STEP_HZ)
 
     stream.run do |msg|
-      begin
       case msg["t"]
       when "tick"
         aggregator.update(msg["i"], msg["f"], msg["rssi"])
@@ -99,11 +98,12 @@ if directory
         peak_tbody_el[:innerHTML] = rows.empty? ? "<tr><td colspan=\"3\">検出なし</td></tr>" : rows
         scan_status_el[:textContent] = "完了 (#{named.size} 局検出)"
         start_btn[:disabled] = false
+      else
+        JS.global[:console].call(:warn, "Unknown MockStream message type: #{msg["t"]}")
       end
-      rescue => e
-        scan_status_el[:textContent] = "スキャン中エラー: #{e.message}"
-        start_btn[:disabled] = false
-      end
+    rescue => e
+      scan_status_el[:textContent] = "スキャン中エラー: #{e.message}"
+      start_btn[:disabled] = false
     end
   end
 end
