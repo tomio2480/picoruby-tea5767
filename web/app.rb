@@ -153,26 +153,31 @@ if directory
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">接続待ち</td></tr>"
 
     aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
-    pico_client = SerialClient.new
+    client = SerialClient.new
+    pico_client = client
 
     on_stream_end = lambda do |message|
+      next unless pico_client.equal?(client)
       scan_status_el[:textContent] = "Pico 切断: #{message}"
       connect_pico_btn[:disabled]  = false
       start_mock_btn[:disabled]    = false
       pico_client = nil
     end
 
-    pico_client.request_and_open(
+    client.request_and_open(
       on_ready: lambda do |c|
+        next unless pico_client.equal?(client)
         scan_status_el[:textContent] = "Pico 接続済み．受信中..."
         peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">受信中...</td></tr>"
         connect_pico_btn[:disabled]  = false
         c.run(on_error: on_stream_end, &make_handler.call(aggregator, region_key, nil))
       end,
       on_error: lambda do |message|
+        next unless pico_client.equal?(client)
         scan_status_el[:textContent] = "接続エラー: #{message}"
         connect_pico_btn[:disabled]  = false
         start_mock_btn[:disabled]    = false
+        pico_client = nil
       end,
     )
   rescue => e
