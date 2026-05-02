@@ -103,9 +103,14 @@ if directory
     end
   end
 
+  pico_client = nil
+
   start_mock_btn.addEventListener("click") do
     next if start_mock_btn[:disabled].to_s == "true"
-    start_mock_btn[:disabled] = true
+    start_mock_btn[:disabled]   = true
+    connect_pico_btn[:disabled] = true
+    pico_client&.close
+    pico_client = nil
 
     region_key = region_select_el[:value].to_s
     station_freqs_khz = directory.stations(region_key).map { |s| s["freq_khz"] }
@@ -123,17 +128,21 @@ if directory
     )
     stream = MockStream.new(source, start_hz: START_HZ, step_hz: STEP_HZ)
 
-    on_finish = lambda { start_mock_btn[:disabled] = false }
+    on_finish = lambda do
+      start_mock_btn[:disabled]   = false
+      connect_pico_btn[:disabled] = false
+    end
     stream.run(&make_handler.call(aggregator, region_key, on_finish))
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
-    start_mock_btn[:disabled] = false
+    start_mock_btn[:disabled]   = false
+    connect_pico_btn[:disabled] = false
   end
 
-  pico_client = nil
   connect_pico_btn.addEventListener("click") do
     next if connect_pico_btn[:disabled].to_s == "true"
     connect_pico_btn[:disabled] = true
+    start_mock_btn[:disabled]   = true
 
     pico_client&.close
     pico_client = nil
@@ -146,20 +155,29 @@ if directory
     aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
     pico_client = SerialClient.new
 
+    on_stream_end = lambda do |message|
+      scan_status_el[:textContent] = "Pico 切断: #{message}"
+      connect_pico_btn[:disabled]  = false
+      start_mock_btn[:disabled]    = false
+      pico_client = nil
+    end
+
     pico_client.request_and_open(
       on_ready: lambda do |c|
         scan_status_el[:textContent] = "Pico 接続済み．受信中..."
         peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">受信中...</td></tr>"
         connect_pico_btn[:disabled]  = false
-        c.run(&make_handler.call(aggregator, region_key, nil))
+        c.run(on_error: on_stream_end, &make_handler.call(aggregator, region_key, nil))
       end,
       on_error: lambda do |message|
         scan_status_el[:textContent] = "接続エラー: #{message}"
         connect_pico_btn[:disabled]  = false
+        start_mock_btn[:disabled]    = false
       end,
     )
   rescue => e
     scan_status_el[:textContent] = "接続準備エラー: #{e.message}"
     connect_pico_btn[:disabled] = false
+    start_mock_btn[:disabled]   = false
   end
 end

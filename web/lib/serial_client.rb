@@ -27,7 +27,7 @@ class SerialClient
     end
   end
 
-  def run(&block)
+  def run(on_error: nil, &block)
     buffer = ""
     decoder = JS.global[:TextDecoder].new
 
@@ -36,7 +36,10 @@ class SerialClient
       return if @reader.nil?
       @reader.call(:read).call(:then) do |result|
         next if @reader.nil?
-        next if result[:done].to_s == "true"
+        if result[:done].to_s == "true"
+          on_error.call("ストリーム終了") if on_error
+          next
+        end
 
         chunk_str = decoder.call(:decode, result[:value]).to_s
         buffer += chunk_str
@@ -47,14 +50,35 @@ class SerialClient
           block.call(msg) if msg
         end
         read_next.call
+      end.call(:catch) do |err|
+        msg = err[:message].to_s
+        message = (msg.empty? || msg == "undefined") ? err.to_s : msg
+        on_error.call(message) if on_error
       end
     end
     read_next.call
   end
 
   def close
-    @reader.call(:releaseLock) if @reader
-    @port.call(:close) if @port
+    if @reader
+      begin
+        @reader.call(:cancel)
+      rescue
+        # 既にキャンセル済みなど
+      end
+      begin
+        @reader.call(:releaseLock)
+      rescue
+        # 既にリリース済みなど
+      end
+    end
+    if @port
+      begin
+        @port.call(:close)
+      rescue
+        # 既にクローズ済みなど
+      end
+    end
     @reader = nil
     @port   = nil
   end
