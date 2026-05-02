@@ -10,7 +10,7 @@ class SpectrumScanner
 
   def scan
     @count.times do |i|
-      freq = @start_hz + @step_hz * i
+      freq = @start_hz + (@step_hz * i)
       @receiver.tune(freq)
       @sleeper.call(@wait_ms)
       status = @receiver.status

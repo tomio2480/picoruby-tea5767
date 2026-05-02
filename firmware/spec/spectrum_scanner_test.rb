@@ -1,5 +1,4 @@
 require "minitest/autorun"
-require_relative "../lib/tea5767"
 require_relative "../lib/spectrum_scanner"
 
 class FakeReceiver
