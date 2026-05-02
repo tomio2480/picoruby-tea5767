@@ -14,8 +14,8 @@ Phase 3 では `web/lib/serial_client.rb` を実装した．
 Phase 2 で確認したとおり， `JS::Object#await` は Fiber コンテキストからしか呼べない．
 `addEventListener` コールバックは Fiber 外．
 Promise を返す API は **`.call(:then)` チェイン** で書く．
-Web Serial API の `requestPort` ・ `port.open` ・ `getReader` ・ `reader.read` はすべて Promise を返す．
-したがって全段でこのパターンを使う．
+Web Serial API の Promise 系メソッドは `requestPort`・`port.open`・`getReader`・`reader.read` の 4 つ．
+これらすべてが Promise を返すため，全段でこのパターンを使う．
 
 lambda の自己参照パターンで `reader.read` の Promise ループを組み立てる．
 
