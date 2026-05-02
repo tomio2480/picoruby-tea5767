@@ -60,26 +60,37 @@ class SerialClient
   end
 
   def close
-    if @reader
-      begin
-        @reader.call(:cancel)
-      rescue
-        # 既にキャンセル済みなど
+    return if @port.nil?
+    reader_to_close = @reader
+    port_to_close   = @port
+    @reader = nil
+    @port   = nil
+
+    if reader_to_close
+      reader_to_close.call(:cancel).call(:then) do
+        begin
+          reader_to_close.call(:releaseLock)
+        rescue
+          # 既にリリース済みなど
+        end
+        begin
+          port_to_close.call(:close)
+        rescue
+          # 既にクローズ済みなど
+        end
+      end.call(:catch) do |_|
+        begin
+          port_to_close.call(:close)
+        rescue
+          # 既にクローズ済みなど
+        end
       end
+    else
       begin
-        @reader.call(:releaseLock)
-      rescue
-        # 既にリリース済みなど
-      end
-    end
-    if @port
-      begin
-        @port.call(:close)
+        port_to_close.call(:close)
       rescue
         # 既にクローズ済みなど
       end
     end
-    @reader = nil
-    @port   = nil
   end
 end

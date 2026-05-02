@@ -161,6 +161,7 @@ if directory
       scan_status_el[:textContent] = "Pico 切断: #{message}"
       connect_pico_btn[:disabled]  = false
       start_mock_btn[:disabled]    = false
+      client.close
       pico_client = nil
     end
 
