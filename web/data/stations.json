@@ -6,7 +6,7 @@
       "stations": [
         {
           "freq_khz": 79400,
-          "name": "FM NORTHWAVE",
+          "name": "FM NORTH WAVE",
           "kind": "fm",
           "power_w": 250,
           "site": "函館",
@@ -43,6 +43,152 @@
           "power_w": 250,
           "site": "函館",
           "note": "FM 北海道 函館中継局"
+        }
+      ]
+    },
+    "asahikawa": {
+      "name": "旭川市",
+      "prefecture": "北海道",
+      "stations": [
+        {
+          "freq_khz": 76400,
+          "name": "AIR-G'（FM 北海道）",
+          "kind": "fm",
+          "power_w": 500,
+          "site": "旭川（旭山）",
+          "note": "FM 北海道 旭川局"
+        },
+        {
+          "freq_khz": 79800,
+          "name": "FM NORTH WAVE",
+          "kind": "fm",
+          "power_w": 500,
+          "site": "旭川（旭山）",
+          "note": "FM ノースウェーブ 旭川局"
+        },
+        {
+          "freq_khz": 83700,
+          "name": "FMりべーる",
+          "kind": "community",
+          "power_w": 20,
+          "site": "旭川",
+          "note": "JOZZ1AB-FM"
+        },
+        {
+          "freq_khz": 85800,
+          "name": "NHK-FM 旭川",
+          "kind": "fm",
+          "power_w": 500,
+          "site": "旭川（旭山）",
+          "note": "NHK-FM 旭川局"
+        }
+      ]
+    },
+    "sapporo": {
+      "name": "札幌市",
+      "prefecture": "北海道",
+      "stations": [
+        {
+          "freq_khz": 80400,
+          "name": "AIR-G'（FM 北海道）",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "FM 北海道 札幌局"
+        },
+        {
+          "freq_khz": 82500,
+          "name": "FM NORTH WAVE",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "FM ノースウェーブ 札幌局"
+        },
+        {
+          "freq_khz": 85200,
+          "name": "NHK-FM 札幌",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "JOAS-FM"
+        },
+        {
+          "freq_khz": 90400,
+          "name": "STV ラジオ（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "STV ラジオ FM 補完放送"
+        },
+        {
+          "freq_khz": 91500,
+          "name": "HBC ラジオ（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "HBC ラジオ FM 補完放送"
+        }
+      ]
+    },
+    "tokyo": {
+      "name": "東京（23 区）",
+      "prefecture": "東京都",
+      "stations": [
+        {
+          "freq_khz": 80000,
+          "name": "TOKYO FM",
+          "kind": "fm",
+          "power_w": 10000,
+          "site": "東京タワー（港区）",
+          "note": "JOAU-FM"
+        },
+        {
+          "freq_khz": 81300,
+          "name": "J-WAVE",
+          "kind": "fm",
+          "power_w": 7000,
+          "site": "東京スカイツリー（墨田区）",
+          "note": "JOAV-FM"
+        },
+        {
+          "freq_khz": 82500,
+          "name": "NHK-FM 東京",
+          "kind": "fm",
+          "power_w": 7000,
+          "site": "東京スカイツリー（墨田区）",
+          "note": "JOAK-FM"
+        },
+        {
+          "freq_khz": 89700,
+          "name": "interfm",
+          "kind": "fm",
+          "power_w": 10000,
+          "site": "東京タワー（港区）",
+          "note": "JODW-FM"
+        },
+        {
+          "freq_khz": 90500,
+          "name": "TBS ラジオ（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 7000,
+          "site": "東京スカイツリー（墨田区）",
+          "note": "TBS ラジオ FM 補完放送"
+        },
+        {
+          "freq_khz": 91600,
+          "name": "文化放送（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 7000,
+          "site": "東京スカイツリー（墨田区）",
+          "note": "文化放送 FM 補完放送"
+        },
+        {
+          "freq_khz": 93000,
+          "name": "ニッポン放送（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 7000,
+          "site": "東京スカイツリー（墨田区）",
+          "note": "ニッポン放送 FM 補完放送"
         }
       ]
     }

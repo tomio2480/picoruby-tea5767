@@ -1,4 +1,5 @@
 require "minitest/autorun"
+require "json"
 require_relative "../lib/station_directory"
 
 class StationDirectoryTest < Minitest::Test
@@ -68,5 +69,30 @@ class StationDirectoryTest < Minitest::Test
   def test_存在しない地域のlookupはnil
     dir = StationDirectory.new(FIXTURE)
     assert_nil dir.lookup("sapporo", 80_700_000)
+  end
+end
+
+class StationDirectoryDataTest < Minitest::Test
+  STATIONS_DATA = JSON.parse(
+    File.read(File.join(__dir__, "../data/stations.json"))
+  ).freeze
+  FREQ_MIN_KHZ = 76_000
+  FREQ_MAX_KHZ = 95_000
+
+  STATIONS_DATA["regions"].keys.each do |region|
+    define_method(:"test_#{region}_は空でない局リストを返す") do
+      dir = StationDirectory.new(STATIONS_DATA)
+      assert_operator dir.stations(region).size, :>, 0
+    end
+
+    define_method(:"test_#{region}_の全周波数はスキャン範囲内") do
+      dir = StationDirectory.new(STATIONS_DATA)
+      dir.stations(region).each do |s|
+        assert_operator s["freq_khz"], :>=, FREQ_MIN_KHZ,
+          "#{s["name"]} の #{s["freq_khz"]} kHz が下限を下回っている"
+        assert_operator s["freq_khz"], :<=, FREQ_MAX_KHZ,
+          "#{s["name"]} の #{s["freq_khz"]} kHz が上限を超えている"
+      end
+    end
   end
 end
