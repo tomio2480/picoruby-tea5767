@@ -80,10 +80,10 @@ end
 
 | 代替案 | 棄却理由 |
 |---|---|
-| Fiber ベースで `await` を使う | `addEventListener` 内から Fiber 化する API が Ruby.wasm で確立していない．複雑化リスクに見合うメリットが薄い |
-| JS 側で `ReadableStream.pipeThrough(TextDecoderStream).pipeThrough(自作 LineSplitStream)` | 「両端 Ruby」訴求を損なう．行分割は Ruby で十分軽い |
+| Fiber ベースで `await` を使う | `addEventListener` 内から Fiber 化する API が Ruby.wasm で確立していない．複雑化リスクに見合うメリットが薄い． |
+| JS 側で `ReadableStream.pipeThrough(TextDecoderStream).pipeThrough(自作 LineSplitStream)` | 「両端 Ruby」訴求を損なう．行分割は Ruby で十分軽い． |
 | モック / 実機切替を select でまとめる | 2 ボタン並べる方がクリック 1 つで挙動が決まり UX がシンプル |
-| `@reader.read` を Fiber で包んで `await` | Phase 2 と同じ理由で回避．Promise チェインで十分 |
+| `@reader.read` を Fiber で包んで `await` | Phase 2 と同じ理由で回避．Promise チェインで十分． |
 
 ## 開発時の動作確認チェックリスト
 

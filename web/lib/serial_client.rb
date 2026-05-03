@@ -47,7 +47,11 @@ class SerialClient
           line = buffer[0...idx]
           buffer = buffer[(idx + 1)..]
           msg = Protocol.parse(line)
-          block.call(msg) if msg
+          if msg
+            block.call(msg)
+          elsif !line.strip.empty?
+            JS.global[:console].call(:warn, "Failed to parse line: #{line}")
+          end
         end
         read_next.call
       end.call(:catch) do |err|
