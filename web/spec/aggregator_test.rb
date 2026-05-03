@@ -83,6 +83,25 @@ class AggregatorTest < Minitest::Test
     assert_equal [], aggregator.dropped_frequencies
   end
 
+  def test_clearでpixelsが0で初期化される
+    aggregator = Aggregator.new(channel_count: 4, pixel_count: 2)
+    aggregator.update(0, 76_000_000, 15)
+    aggregator.update(2, 76_200_000, 9)
+    aggregator.clear
+
+    assert_equal [0, 0], aggregator.pixels
+  end
+
+  def test_clearでdropped_frequenciesも空になる
+    aggregator = Aggregator.new(channel_count: 4, pixel_count: 2)
+    aggregator.update(99, 99_000_000, 7)
+    refute_empty aggregator.dropped_frequencies
+
+    aggregator.clear
+
+    assert_equal [], aggregator.dropped_frequencies
+  end
+
   def test_channel_countが0以下ならArgumentErrorを投げる
     assert_raises(ArgumentError) { Aggregator.new(channel_count: 0,  pixel_count: 1) }
     assert_raises(ArgumentError) { Aggregator.new(channel_count: -1, pixel_count: 1) }

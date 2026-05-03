@@ -23,6 +23,7 @@
         </select>
       </label>
       <button type="button" id="start-mock">モックスキャン開始</button>
+      <button type="button" id="connect-pico">Pico に接続</button>
       <span id="scan-status">待機中</span>
     </p>
   </section>
@@ -55,12 +56,14 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@ruby/4.0-wasm-wasi@2.9.3-2.9.4/dist/browser.script.iife.js" integrity="sha384-PgjkYoQ9PD2oceQoBy8mqfDNIbZatLeZiWG+kBfAKKVwWmf6ILeHDVP89CymeIlr" crossorigin="anonymous"></script>
+<script type="text/ruby" data-eval="async" src="./lib/protocol.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/aggregator.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/peak_detector.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/station_directory.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/mock_source.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/canvas_renderer.rb"></script>
 <script type="text/ruby" data-eval="async" src="./lib/mock_stream.rb"></script>
+<script type="text/ruby" data-eval="async" src="./lib/serial_client.rb"></script>
 <script type="text/ruby" data-eval="async" src="./app.rb"></script>
 </body>
 </html>

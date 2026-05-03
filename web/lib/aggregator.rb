@@ -24,6 +24,12 @@ class Aggregator
     self
   end
 
+  def clear
+    @rssi                = Array.new(@channel_count, 0)
+    @dropped_frequencies = []
+    self
+  end
+
   def clear_dropped_frequencies
     @dropped_frequencies = []
     self
