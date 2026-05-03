@@ -160,7 +160,7 @@
         },
         {
           "freq_khz": 89700,
-          "name": "InterFM897",
+          "name": "interfm",
           "kind": "fm",
           "power_w": 10000,
           "site": "東京タワー（港区）",

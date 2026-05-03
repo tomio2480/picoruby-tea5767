@@ -79,7 +79,7 @@ class StationDirectoryDataTest < Minitest::Test
   FREQ_MIN_KHZ = 76_000
   FREQ_MAX_KHZ = 95_000
 
-  %w[asahikawa sapporo tokyo].each do |region|
+  STATIONS_DATA["regions"].keys.each do |region|
     define_method(:"test_#{region}_は空でない局リストを返す") do
       dir = StationDirectory.new(STATIONS_DATA)
       assert_operator dir.stations(region).size, :>, 0
