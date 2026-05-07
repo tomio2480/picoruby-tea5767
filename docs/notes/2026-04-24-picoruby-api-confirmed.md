@@ -27,9 +27,9 @@ i2c = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 
 本体コードを検索した結果は次のとおり．
 
-- **`i2c.write(addr, b1, b2, ..., bN)`**：可変長引数．配列を渡すと「1 つの引数」になるので注意．
+- **`i2c.write(addr, b1, b2, ..., bN)`** ：可変長引数．配列を渡すと「1 つの引数」になるので注意．
   - 例：`@i2c.write(@address, 0x00, COLUMNADDR, 0, @width - 1)`（[ssd1306.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-ssd1306/mrblib/ssd1306.rb)）
-- **`i2c.read(addr, n)`**：バイト列を **String** で返す．`.bytes` で `Array[Integer]` 化するのが定型．
+- **`i2c.read(addr, n)`** ：バイト列を **String** で返す．`.bytes` で `Array[Integer]` 化するのが定型．
   - 例：`data = @i2c.read(ADDRESS, 7).bytes`（[aht25.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-aht25/mrblib/aht25.rb)）
 
 ### sleep_ms
