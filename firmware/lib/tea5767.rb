@@ -28,7 +28,9 @@ class TEA5767
   end
 
   def status
-    b = @i2c.read(ADDRESS, 5).bytes
+    res = @i2c.read(ADDRESS, 5)
+    return { ready: false, stereo: false, rssi: 0 } if res.to_s.length < 5
+    b = res.bytes
     {
       ready:  ((b[0] >> 7) & 1) == 1,
       stereo: ((b[2] >> 7) & 1) == 1,

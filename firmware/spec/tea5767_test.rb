@@ -98,4 +98,12 @@ class TEA5767Test < Minitest::Test
     fake_i2c = FakeI2C.new(read_data: [0, 0, 0, 0x00, 0])
     assert_equal 0, TEA5767.new(fake_i2c).status[:rssi]
   end
+
+  def test_statusは5バイト未満の場合デフォルト値を返す
+    fake_i2c = FakeI2C.new(read_data: [0, 0])
+    result = TEA5767.new(fake_i2c).status
+    assert_equal false, result[:ready]
+    assert_equal false, result[:stereo]
+    assert_equal 0,     result[:rssi]
+  end
 end
