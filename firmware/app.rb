@@ -31,6 +31,7 @@ scanner  = SpectrumScanner.new(
   step_hz:  STEP_HZ,
   count:    CHANNEL_COUNT,
   sleeper:  ->(ms) { sleep_ms(ms) },
+  wait_ms:  TEA5767::PLL_LOCK_WAIT_MS,
 )
 
 loop do
