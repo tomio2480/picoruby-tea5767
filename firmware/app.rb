@@ -15,6 +15,8 @@ require "/home/lib/tea5767"
 require "/home/lib/spectrum_scanner"
 require "/home/lib/serial_emitter"
 
+$stdout.sync = true
+
 START_HZ      = 76_000_000
 STEP_HZ       = 100_000
 CHANNEL_COUNT = 191
