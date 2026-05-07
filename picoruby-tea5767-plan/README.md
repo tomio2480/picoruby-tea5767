@@ -295,7 +295,7 @@ class TEA5767
       ADDRESS,
       (pll >> 8) & 0x3F,
       pll & 0xFF,
-      0b1011_0000,   # SUD=1, SSL=01, HLSI=1, MS=0
+      0b1011_0000,   # SUD=1, SSL=01, HLSI=1, MS=0, SWP1=0
       0b0001_0000,   # XTAL=1
       0b0000_0000,   # DTC=0
     )
