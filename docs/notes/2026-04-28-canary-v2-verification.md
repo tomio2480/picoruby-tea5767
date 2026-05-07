@@ -9,7 +9,8 @@
 ## 判断
 
 picoruby-tea5767 を canary として活用する．
-v2 候補 commit `a342d8e4511a3cbbe13b9a976efedfe1f2aee878` を SHA pin した caller に切り替える．
+v2 候補を SHA pin した caller に切り替える．
+対象 commit は `a342d8e4511a3cbbe13b9a976efedfe1f2aee878`．
 reviewdog の inline コメント投稿まで End-to-End で動作することを実 PR 上で確認する．
 
 ## 代替案と棄却理由

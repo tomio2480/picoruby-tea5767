@@ -1,10 +1,11 @@
-# ブラウザでの動作確認は HTTP サーバ経由にする
+# ブラウザでの動作確認は HTTP サーバー経由にする
 
 ## 背景
 
-ruby.wasm の `browser.script.iife.js` は `<script type="text/ruby" src="...">` で外部 `.rb` を読み込む機能を持つ．しかし `file://` プロトコルで `index.html` を直接開くと， CORS ポリシーにより外部ファイルの fetch が禁止されて読み込みに失敗する．
+ruby.wasm では `<script type="text/ruby" src="...">` で外部 `.rb` ファイルを読み込める．
+しかし `file://` で `index.html` を直接開くと，CORS ポリシーで fetch が禁止される．
 
-実際に出たエラー（Edge 開発者ツール）：
+実際に出たエラーを Edge 開発者ツールから引用する．
 
 ```
 Access to fetch at 'file:///.../lib/canvas_renderer.rb' from origin 'null'
@@ -16,7 +17,8 @@ protocol schemes: chrome-extension, chrome-untrusted, data, edge, http, https, i
 
 ## 判断
 
-**ローカル開発時は Ruby 標準の `-run -e httpd` で簡易 HTTP サーバを起動し，`http://localhost:8000/` で開く**運用に統一する．
+ローカル開発時は Ruby 標準の `-run -e httpd` で簡易 HTTP サーバーを起動する．
+`http://localhost:8000/` で開く運用に統一する．
 
 ```powershell
 cd web

@@ -39,12 +39,12 @@ HBC / STV のワイド FM は **函館では運用されていない** ため含
 
 - `freq_khz` は kHz 整数で保持（浮動小数誤差を避ける）．
 - `kind` で `fm` / `wide_fm` / `community` を区別．UI で色分け可能．
-- `power_w` と `site` は同一周波数の複数送信地点を識別するため保持（例：FMいるか親局 20 W・日浦中継 5 W）．
+- `power_w` と `site` は同一周波数の複数送信地点を識別するため保持（例：FM いるか親局 20 W・日浦中継 5 W）．
 - 代表エントリ 1 件＋`note` で補足する形を基本とする．
 
 ## 参照
 
 - [picoruby-tea5767-plan/README.md](../../picoruby-tea5767-plan/README.md) 局プリセット節
 - [web/data/stations.json](../../web/data/stations.json)
-- 北海道函館地方 FM ラジオ周波数ガイド: https://www.denpa-data.com/i/fm/hokkaido/hakodate.htm
-- 総務省 全国民放 FM 局・ワイド FM 局一覧: https://www.soumu.go.jp/menu_seisaku/ictseisaku/housou_suishin/fm-list.html
+- 北海道の函館地方 FM ラジオ周波数ガイド: https://www.denpa-data.com/i/fm/hokkaido/hakodate.htm
+- 総務省の全国民放 FM 局・ワイド FM 局一覧: https://www.soumu.go.jp/menu_seisaku/ictseisaku/housou_suishin/fm-list.html

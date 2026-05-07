@@ -88,14 +88,14 @@
 
 ### reject する典型例
 
-表 1: textlint で reject 対象になる典型例
+表 1. textlint で reject 対象になる典型例．
 
 | 種別 | 理由 |
 |---|---|
 | 表 / 図 caption の `ja-no-mixed-period` | label 扱いで `．` を付けない慣習 |
 | 画像 alt 内の sentence-length | アクセシビリティのため詳細描述を維持 |
 | 固有名詞の半角全角間スペース | 固有名詞は対象外 |
-| 固有名詞（法令名等）の max-kanji-continuous-len | 分解すると引用として破綻．例：電波法施行規則 |
+| 固有名詞（法令名等）の max-kanji-continuous-len | 分解すると引用として破綻．例：`電波法施行規則` |
 | prh の `JS` が `JSON` の substring に hit | 中央辞書の word boundary 不備 |
 | prh の `ユーザ` / `サーバ` が長音化済語の内部に hit | 中央辞書の word boundary 不備 |
 | `**ラベル** ：` の構造 | 構造維持．文字レベル整形のみ |
@@ -132,7 +132,7 @@ cp _tmp_prh.yml prh.yml
 
 ### ローカル実行で裏取りできた reject 例
 
-- gemini が提案する「全角括弧の内側にスペース追加」は，中央 textlint の `preset-ja-spacing/ja-no-space-around-parentheses` と衝突する．
+- gemini が提案する「全角括弧内側へのスペース追加」は，`ja-no-space-around-parentheses` と衝突する．
 - 元の表記（全角括弧の直内側にスペースを入れない）が中央規律と整合．Phase 1 PR #3 の L5 / L9 でこの根拠で reject した．
 
 ## 設計書の整合性確認
