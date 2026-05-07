@@ -103,6 +103,10 @@
 
 ## textlint をローカルで実行する手順
 
+> **注記** ： `_tmp_lint/`・`_tmp_textlintrc.json`・`_tmp_prh.yml` は
+> ローカル textlint 廃止（[2026-05-07-pr7-review-learnings.md](./2026-05-07-pr7-review-learnings.md)）により
+> 現リポジトリには存在しない．CI のみに依存する運用に切り替えたため，本節は過去の記録として扱う．
+
 PR を push する前に中央 textlint 設定と同じ違反を先取りで検出するための手順．
 レビュアーへの差し戻し回数を減らせる．
 
