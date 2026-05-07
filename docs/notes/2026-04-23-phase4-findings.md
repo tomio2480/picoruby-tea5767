@@ -2,7 +2,7 @@
 
 ## 背景
 
-Phase 4 として `firmware/` 下の純ロジック 3 本（TEA5767 / SpectrumScanner / SerialEmitter）を TDD で実装した．結果は 23 runs / 39 assertions 緑で，実機不要で設計を固め切れた．`app.rb` は PicoRuby R2P2 想定の結線コードで CRuby テスト対象外．
+Phase 4 として `firmware/` 下の純ロジック 3 本を TDD で実装した．対象は TEA5767 / SpectrumScanner / SerialEmitter で，23 runs / 39 assertions 緑を達成した．`app.rb` は PicoRuby R2P2 想定の結線コードで CRuby テスト対象外．
 
 ## 設計上の要点
 

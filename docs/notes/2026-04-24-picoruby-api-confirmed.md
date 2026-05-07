@@ -2,13 +2,13 @@
 
 ## 背景
 
-Phase 4 で `firmware/app.rb` を書いた時点では PicoRuby の API を想定で書いていた．ユーザから「picoruby/picoruby リポジトリに実装がある」との指摘を受け，本体コードを読んで API を確定した．結果として `firmware/lib/tea5767.rb` の I2C 呼び出しと `firmware/app.rb` の require / I2C.new 構文に修正が必要だった．
+Phase 4 で `firmware/app.rb` を書いた時点では PicoRuby の API を想定で書いていた．ユーザーから「picoruby/picoruby リポジトリに実装がある」との指摘を受け，本体コードを読んで API を確定した．また，`firmware/lib/tea5767.rb` の I2C 呼び出しと `app.rb` の require / I2C.new 構文に修正が必要だった．
 
 ## 確定した API
 
 ### I2C
 
-[picoruby-i2c/mrblib/i2c.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-i2c/mrblib/i2c.rb) と複数の実例から：
+[picoruby-i2c/mrblib/i2c.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-i2c/mrblib/i2c.rb) と複数の実例から確認した．
 
 ```ruby
 class I2C
@@ -25,12 +25,12 @@ i2c = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 
 ### I2C の write / read
 
-本体コードを検索した結果：
+本体コードを検索した結果は次のとおり．
 
-- **`i2c.write(addr, b1, b2, ..., bN)`** ：可変長引数．配列を渡すと「1 つの引数」になるので注意．
-  - 例：`@i2c.write(@address, 0x00, COLUMNADDR, 0, @width - 1)` （[picoruby-ssd1306/mrblib/ssd1306.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-ssd1306/mrblib/ssd1306.rb)）
-- **`i2c.read(addr, n)`** ：バイト列を **String** で返す．`.bytes` で `Array[Integer]` 化するのが定型．
-  - 例：`data = @i2c.read(ADDRESS, 7).bytes` （[picoruby-aht25/mrblib/aht25.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-aht25/mrblib/aht25.rb)）
+- **`i2c.write(addr, b1, b2, ..., bN)`**：可変長引数．配列を渡すと「1 つの引数」になるので注意．
+  - 例：`@i2c.write(@address, 0x00, COLUMNADDR, 0, @width - 1)`（[ssd1306.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-ssd1306/mrblib/ssd1306.rb)）
+- **`i2c.read(addr, n)`**：バイト列を **String** で返す．`.bytes` で `Array[Integer]` 化するのが定型．
+  - 例：`data = @i2c.read(ADDRESS, 7).bytes`（[aht25.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-aht25/mrblib/aht25.rb)）
 
 ### sleep_ms
 
@@ -42,7 +42,7 @@ i2c = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 
 [picoruby-require/mrblib/require.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-require/mrblib/require.rb) を読むと **`Kernel#require_relative` は定義されていない** ．定義されているのは `require` と `load` のみ．
 
-`require` のロードパス解決：
+`require` のロードパス解決の仕様は次のとおり．
 
 - 絶対パス（`/` 始まり）：そのパスを直接使う
 - 相対パス：`$LOAD_PATH` から `.mrb` / `.rb` を探す
@@ -51,7 +51,7 @@ i2c = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 
 ### `/home/app.rb` 自動起動
 
-[picoruby-shell/shell_executables/r2p2.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-shell/shell_executables/r2p2.rb) に以下の仕組み：
+[picoruby-shell/shell_executables/r2p2.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-shell/shell_executables/r2p2.rb) に以下の仕組みがある．
 
 ```ruby
 if File.exist?("#{ENV['HOME']}/app.mrb")
@@ -65,9 +65,9 @@ elsif File.exist?("#{ENV['HOME']}/app.rb")
 
 ### `$stdout` / `puts`
 
-[picoruby-r2p2/mrblib/main_task.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-r2p2/mrblib/main_task.rb) の先頭で `STDOUT = IO.new` が呼ばれ，R2P2 の出力が CDC 0（USB 仮想シリアル）に流れる構造になっている．
+[picoruby-r2p2/mrblib/main_task.rb](https://github.com/picoruby/picoruby/blob/master/mrbgems/picoruby-r2p2/mrblib/main_task.rb) の先頭で `STDOUT = IO.new` を呼び出す．R2P2 の出力は CDC 0（USB 仮想シリアル）へ流れる．
 
-`puts` も `$stdout.puts` も同じ IO に届く．**R2P2 はデュアル CDC** で，stderr 用の CDC 1 もある（`Machine.debug_puts` で出力）．
+`puts` と `$stdout.puts` はいずれも同じ IO に届く．**R2P2 はデュアル CDC** で，stderr 用の CDC 1 もある（`Machine.debug_puts` で出力）．
 
 ## 本プロジェクトへの反映
 
@@ -91,7 +91,7 @@ elsif File.exist?("#{ENV['HOME']}/app.rb")
 
 ## 参照
 
-- picoruby/picoruby リポジトリ（https://github.com/picoruby/picoruby）
+- [picoruby/picoruby リポジトリ](https://github.com/picoruby/picoruby)
   - mrbgems/picoruby-i2c/mrblib/i2c.rb
   - mrbgems/picoruby-i2c/example/i2c_scan.rb
   - mrbgems/picoruby-require/mrblib/require.rb
