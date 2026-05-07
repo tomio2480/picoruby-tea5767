@@ -301,10 +301,12 @@ class TEA5767
   end
 
   def status
-    b = @i2c.read(ADDRESS, 5).bytes   # PicoRuby の i2c.read は String を返すため .bytes で配列化
+    res = @i2c.read(ADDRESS, 5)
+    return { ready: false, stereo: false, rssi: 0 } if res.to_s.length < 5
+    b = res.bytes
     {
-      ready:  (b[0] >> 7) & 1 == 1,
-      stereo: (b[2] >> 7) & 1 == 1,
+      ready:  ((b[0] >> 7) & 1) == 1,
+      stereo: ((b[2] >> 7) & 1) == 1,
       rssi:   (b[3] >> 4) & 0x0F,
     }
   end
@@ -314,20 +316,22 @@ end
 ```ruby
 # firmware/lib/spectrum_scanner.rb
 class SpectrumScanner
-  # sleeper を注入で受け取り、CRuby テストでは no-op、実機では sleep_ms を渡す
-  def initialize(receiver, start_hz:, step_hz:, count:, sleeper: ->(_ms) {})
+  # sleeper と wait_ms を注入で受け取る．CRuby テストでは sleeper は no-op，wait_ms は 0．
+  # 実機では sleeper: ->(ms) { sleep_ms(ms) }, wait_ms: TEA5767::PLL_LOCK_WAIT_MS を渡す．
+  def initialize(receiver, start_hz:, step_hz:, count:, sleeper: ->(_ms) {}, wait_ms: 0)
     @receiver = receiver
     @start_hz = start_hz
     @step_hz  = step_hz
     @count    = count
     @sleeper  = sleeper
+    @wait_ms  = wait_ms
   end
 
   def scan
     @count.times do |i|
       freq = @start_hz + @step_hz * i
       @receiver.tune(freq)
-      @sleeper.call(TEA5767::PLL_LOCK_WAIT_MS)
+      @sleeper.call(@wait_ms)
       yield(i, freq, @receiver.status) if block_given?
     end
   end
