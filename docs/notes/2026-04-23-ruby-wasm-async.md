@@ -2,7 +2,8 @@
 
 ## 背景
 
-Ruby.wasm の `browser.script.iife.js` で `<script type="text/ruby">` を書いたとき，`JS::Object#await` を呼ぶと次のエラーが出る．
+Ruby.wasm の `browser.script.iife.js` では `JS::Object#await` の呼び出しは制限される．
+`<script type="text/ruby">` で書いたスクリプト内で呼ぶと次のエラーが出る．
 
 ```
 JS::PromiseScheduler#await: JS::Object#await can be called only from
@@ -23,7 +24,7 @@ e.g. <script type="text/ruby" data-eval="async">puts :hello</script>
    - 例：`<script type="text/ruby" data-eval="async" src="./app.rb"></script>`
    - これでスクリプト本体の `.await` が使える（fetch → JSON 読み込みなど）．
 2. **`addEventListener` などのコールバック内では await を使わない**
-   - コールバックは JS のイベントループから同期呼び出しされ，Fiber コンテキストの外に出る．
+   - コールバックは JavaScript のイベントループから同期呼び出しされ，Fiber コンテキストの外に出る．
    - コールバック内で非同期待機が必要な場合は，**`setTimeout` の再帰呼び出し**で時間差の処理を組み立てる．
 
 ### setTimeout 再帰パターン
@@ -48,20 +49,20 @@ end
 
 - `run` は即時 return する（run 本体はスケジューリングしかしない）．
 - 各 tick の処理は setTimeout のコールバック内で逐次実行される．
-- Ruby の Proc は `JS.global.call(:setTimeout, ...)` で自動的に JS function に変換される．
+- Ruby の Proc は `JS.global.call(:setTimeout, ...)` で自動的に JavaScript function に変換される．
 
 ## 代替案と棄却理由
 
 | 代替案 | 棄却理由 |
 |---|---|
 | `Fiber.new { ... }.resume` でコールバックを手動 Fiber 化 | ruby.wasm の Fiber API を手動で扱う必要があり複雑．ドキュメントも手薄． |
-| JS 側で `async` 関数を作って Ruby から呼び出す | bootstrap.js が肥大化．両端 Ruby の訴求を損なう． |
+| JavaScript 側で `async` 関数を作って Ruby から呼び出す | bootstrap.js が肥大化．両端 Ruby の訴求を損なう． |
 | `requestAnimationFrame` ベースで描画を駆動 | 30 ms 間隔より高頻度になりがち．191 ch × 30 ms = 約 6 秒のテンポを保ちたい今回用途に合わない． |
-| コールバック全体を JS で書く | 両端 Ruby の訴求を損なう．今回採らない． |
+| コールバック全体を JavaScript で書く | 両端 Ruby の訴求を損なう．今回採らない． |
 
 ## 開発時の動作確認チェックリスト
 
-- [ ] HTTP サーバ経由で開いている（file:// ではない）
+- [ ] HTTP サーバー経由で開いている（file:// ではない）
 - [ ] すべての `<script type="text/ruby">` に `data-eval="async"` を付けている
 - [ ] addEventListener のコールバック内で `.await` を呼んでいない
 - [ ] `setTimeout` コールバック内の次回呼び出しは `step.call(i + 1)` のように Proc 自己参照で回している

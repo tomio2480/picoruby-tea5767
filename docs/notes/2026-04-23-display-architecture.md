@@ -1,4 +1,4 @@
-﻿# 表示手段と両端 Ruby 化の採用
+# 表示手段と両端 Ruby 化の採用
 
 ## 背景
 
@@ -8,7 +8,7 @@
 
 ## 判断
 
-PC ブラウザ上で Web Serial API 経由で Pico の出力を受け取る． **Ruby.wasm（Ruby 4.0 系）** で Canvas に描画する構成を採用する．
+PC ブラウザ上の Web Serial API 経由で Pico の出力を受け取る． **Ruby.wasm（Ruby 4.0 系）** で Canvas に描画する構成を採用する．
 
 - Pico 側は USB CDC に JSON Lines を書き出すだけ．PicoRuby で実装する．
 - ブラウザ側は Ruby.wasm．ブートストラップだけ JavaScript で書き，それ以外のロジック・描画は Ruby で書く．

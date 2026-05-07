@@ -1,0 +1,141 @@
+# prh（proofreading helper）辞書
+# 中央テンプレ（tomio2480/github-workflows templates/prh.yml）をベースに
+# このリポジトリ固有の調整を加えたもの．
+# サーバー / ユーザー の pattern に否定先読み（?!ー）を追加して
+# 長音化済み語の内部 substring に誤マッチするバグを回避している．
+version: 1
+
+rules:
+  # プラットフォーム・サービス名
+  - expected: GitHub
+    patterns:
+      - Github
+      - github
+      - GITHUB
+
+  - expected: GitLab
+    patterns:
+      - Gitlab
+      - gitlab
+
+  - expected: JavaScript
+    patterns:
+      - Javascript
+      - javascript
+      - JAVASCRIPT
+      - /\bJS\b/
+    prh:
+      - specs:
+          - from: JS
+            to: JavaScript
+
+  - expected: TypeScript
+    patterns:
+      - Typescript
+      - typescript
+      - TYPESCRIPT
+
+  - expected: Node.js
+    patterns:
+      - /[Nn]ode\.JS/
+      - NodeJS
+      - nodejs
+
+  - expected: Markdown
+    patterns:
+      - markdown
+      - MARKDOWN
+      - マークダウン
+
+  - expected: Pull Request
+    patterns:
+      - pull request
+      - pullrequest
+      - プルリクエスト
+      - プルリク
+
+  # 技術系頻出単語
+  - expected: サーバー
+    # 否定先読み (?!ー) で「サーバー」内の「サーバ」への誤マッチを防ぐ．
+    # 中央辞書の word boundary 不備（tomio2480/github-workflows#33 相当）の暫定対応．
+    patterns:
+      - /サーバ(?!ー)/
+    specs:
+      - from: サーバ起動
+        to: サーバー起動
+      - from: サーバー起動
+        to: サーバー起動
+
+  - expected: ユーザー
+    # plain string `ユーザ` だと substring match で「ユーザー」内の「ユーザ」にも
+    # ヒットして誤検出する（Issue #33・tomio2480/settings PR #37 で 8 件観測）．
+    # 否定先読み `(?!ー)` で「ユーザー」を除外する．
+    patterns:
+      - /ユーザ(?!ー)/
+    specs:
+      - from: ユーザ登録
+        to: ユーザー登録
+      - from: ユーザー登録
+        to: ユーザー登録
+
+  - expected: コンピューター
+    patterns:
+      - コンピュータ
+
+  # 文末表現（省略形を正式名へ）
+  - expected: できる
+    patterns:
+      - 出来る
+
+  - expected: ください
+    patterns:
+      - 下さい
+
+  # 全角記号前後の半角スペース禁止（Issue #15 stage 2）
+  - expected: ・
+    patterns:
+      - / +・ +| +・|・ +/
+    prh: 全角中黒「・」の前後に半角スペースを入れない（JTF スタイル）
+    specs:
+      - from: CI ・ cron
+        to: CI・cron
+      - from: 日本語 ・英語
+        to: 日本語・英語
+      - from: a・ b
+        to: a・b
+
+  - expected: ／
+    patterns:
+      - / +／ +| +／|／ +/
+    prh: 全角スラッシュ「／」の前後に半角スペースを入れない（JTF スタイル）
+    specs:
+      - from: hatena ／ note
+        to: hatena／note
+      - from: source ／url
+        to: source／url
+      - from: url／ title
+        to: url／title
+
+  - expected: ：
+    patterns:
+      - / +： +| +：|： +/
+    prh: 全角コロン「：」の前後に半角スペースを入れない（JTF スタイル）
+    specs:
+      - from: Title ： Value
+        to: Title：Value
+      - from: key ：value
+        to: key：value
+      - from: key： value
+        to: key：value
+
+  - expected: 〜
+    patterns:
+      - / +〜 +| +〜|〜 +/
+    prh: 波ダッシュ「〜」の前後に半角スペースを入れない（JTF スタイル）
+    specs:
+      - from: 2025-08-30 〜 2026-04-13
+        to: 2025-08-30〜2026-04-13
+      - from: A 〜B
+        to: A〜B
+      - from: A〜 B
+        to: A〜B
