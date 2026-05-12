@@ -9,13 +9,14 @@
 #   - i2c.read(addr, n) ... バイト列 String を返す．呼び出し側で .bytes して Array[Integer] 化
 #   - sleep_ms(ms) ... Kernel 拡張．グローバル関数として使用可
 #   - puts(str) / $stdout.puts(str) ... CDC 0 (USB シリアル) に流れる
+#
+# 注意: この R2P2 ビルドでは rescue（修飾子・begin/rescue/end ともに）は未サポート．
+#       Unimplemented opcode (0x56) が発生するため使用禁止．
 
 require "i2c"
 require "/home/lib/tea5767"
 require "/home/lib/spectrum_scanner"
 require "/home/lib/serial_emitter"
-
-$stdout.sync = true rescue nil
 
 START_HZ      = 76_000_000
 STEP_HZ       = 100_000
@@ -27,11 +28,10 @@ receiver = TEA5767.new(i2c)
 emitter  = SerialEmitter.new($stdout)
 scanner  = SpectrumScanner.new(
   receiver,
-  start_hz: START_HZ,
-  step_hz:  STEP_HZ,
-  count:    CHANNEL_COUNT,
-  sleeper:  ->(ms) { sleep_ms(ms) },
-  wait_ms:  TEA5767::PLL_LOCK_WAIT_MS,
+  START_HZ,
+  STEP_HZ,
+  CHANNEL_COUNT,
+  TEA5767::PLL_LOCK_WAIT_MS
 )
 
 loop do
