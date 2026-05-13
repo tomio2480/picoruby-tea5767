@@ -130,6 +130,34 @@
         }
       ]
     },
+    "kitami": {
+      "name": "北見市",
+      "prefecture": "北海道",
+      "stations": [
+        {
+          "freq_khz": 84500,
+          "name": "NHK-FM 北海道（新北見）",
+          "kind": "fm",
+          "site": "北見市",
+          "note": "新北見中継局"
+        },
+        {
+          "freq_khz": 86000,
+          "name": "NHK-FM 北海道（北見）",
+          "kind": "fm",
+          "site": "北見市",
+          "note": "北見放送局"
+        },
+        {
+          "freq_khz": 87800,
+          "name": "AIR-G'（FM 北海道）",
+          "kind": "fm",
+          "power_w": 100,
+          "site": "北見市",
+          "note": "民放 FM"
+        }
+      ]
+    },
     "tokyo": {
       "name": "東京（23 区）",
       "prefecture": "東京都",
