@@ -111,6 +111,7 @@ if directory
     next if start_mock_btn[:disabled].to_s == "true"
     start_mock_btn[:disabled]   = true
     connect_pico_btn[:disabled] = true
+    scan_pico_btn[:disabled]    = true
     pico_client&.close
     pico_client = nil
 

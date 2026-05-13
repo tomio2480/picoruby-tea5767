@@ -43,7 +43,7 @@ led.write(0)   # 初期化完了の瞬間点灯後，コマンド待ち状態に
 
 loop do
   line = $stdin.gets
-  next if line.nil?
+  next if line.nil?   # nil になる条件は未確定（CDC 切断時等）．rescue 禁止のため next で継続する
   next unless line.strip == "SCAN"   # コマンド名は web/app.rb の write("SCAN\n") と対応
 
   led.write(1)
