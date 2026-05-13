@@ -136,25 +136,27 @@
       "stations": [
         {
           "freq_khz": 84500,
-          "name": "NHK-FM 北海道（新北見）",
+          "name": "NHK-FM 新北見",
           "kind": "fm",
-          "site": "北見市",
+          "power_w": 100,
+          "site": "北見市緑ヶ丘",
           "note": "新北見中継局"
         },
         {
           "freq_khz": 86000,
-          "name": "NHK-FM 北海道（北見）",
+          "name": "NHK-FM 北見",
           "kind": "fm",
-          "site": "北見市",
-          "note": "北見放送局"
+          "power_w": 250,
+          "site": "網走市天都山",
+          "note": "JOKP-FM．送信所は網走市天都山"
         },
         {
           "freq_khz": 87800,
           "name": "AIR-G'（FM 北海道）",
           "kind": "fm",
           "power_w": 100,
-          "site": "北見市",
-          "note": "民放 FM"
+          "site": "北見市緑ヶ丘",
+          "note": "FM 北海道 北見中継局"
         }
       ]
     },
