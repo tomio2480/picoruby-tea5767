@@ -88,6 +88,11 @@ class CanvasRenderer
     end
   end
 
+  def x_to_ch_index(x)
+    index = (x.to_f / (@width.to_f / @channel_count)).to_i
+    [[index, 0].max, @channel_count - 1].min
+  end
+
   private
 
   LABEL_ROW_COUNT = 2

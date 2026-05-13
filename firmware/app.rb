@@ -44,24 +44,35 @@ led.write(0)   # 初期化完了の瞬間点灯後，コマンド待ち状態に
 loop do
   line = $stdin.gets
   next if line.nil?   # nil になる条件は未確定（CDC 切断時等）．rescue 禁止のため next で継続する
-  next unless line.strip == "SCAN"   # コマンド名は web/app.rb の write("SCAN\n") と対応
+  cmd   = line.strip
+  parts = cmd.split(":")
 
-  led.write(1)
-  peak_index = 0
-  peak_rssi  = -1
+  case parts[0]
+  when "SCAN"
+    led.write(1)
+    peak_index = 0
+    peak_rssi  = -1
 
-  scanner.scan do |i, freq, status|
-    emitter.tick(i: i, f: freq, rssi: status[:rssi], stereo: status[:stereo])
-    if status[:rssi] > peak_rssi
-      peak_rssi  = status[:rssi]
-      peak_index = i
+    scanner.scan do |i, freq, status|
+      emitter.tick(i: i, f: freq, rssi: status[:rssi], stereo: status[:stereo])
+      if status[:rssi] > peak_rssi
+        peak_rssi  = status[:rssi]
+        peak_index = i
+      end
     end
-  end
 
-  emitter.done(peak: {
-    "i"    => peak_index,
-    "f"    => START_HZ + STEP_HZ * peak_index,
-    "rssi" => peak_rssi,
-  })
-  led.write(0)
+    emitter.done(peak: {
+      "i"    => peak_index,
+      "f"    => START_HZ + STEP_HZ * peak_index,
+      "rssi" => peak_rssi,
+    })
+    led.write(0)
+  when "TUNE"
+    next if parts[1].nil?
+    freq_hz = parts[1].to_i
+    next if freq_hz < START_HZ || freq_hz > START_HZ + STEP_HZ * (CHANNEL_COUNT - 1)
+    receiver.tune(freq_hz)
+    led.write(1)
+    led.write(0)
+  end
 end
