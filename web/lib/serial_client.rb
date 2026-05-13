@@ -63,6 +63,19 @@ class SerialClient
     read_next.call
   end
 
+  def write(text)
+    return if @port.nil?
+
+    encoder = JS.global[:TextEncoder].new
+    data    = encoder.call(:encode, text)
+    writer  = @port[:writable].call(:getWriter)
+    writer.call(:write, data).call(:then) do |_|
+      writer.call(:releaseLock)
+    end.call(:catch) do |_|
+      writer.call(:releaseLock)
+    end
+  end
+
   def close
     return if @port.nil?
     reader_to_close = @reader

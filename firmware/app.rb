@@ -11,6 +11,7 @@
 #   - i2c.read(addr, n) ... バイト列 String を返す．呼び出し側で .bytes して Array[Integer] 化
 #   - sleep_ms(ms) ... Kernel 拡張．グローバル関数として使用可
 #   - puts(str) / $stdout.puts(str) ... CDC 0 (USB シリアル) に流れる
+#   - $stdin.gets ... CDC 0 から 1 行読み込む（改行待ちブロッキング）．末尾は \r
 #
 # 注意: この R2P2 ビルドでは rescue（修飾子・begin/rescue/end ともに）は未サポート．
 #       Unimplemented opcode (0x56) が発生するため使用禁止．
@@ -25,7 +26,6 @@ LED_PIN       = 25
 START_HZ      = 76_000_000
 STEP_HZ       = 100_000
 CHANNEL_COUNT = 191
-IDLE_MS       = 500
 
 led      = GPIO.new(LED_PIN, GPIO::OUT)
 i2c      = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
@@ -39,8 +39,14 @@ scanner  = SpectrumScanner.new(
   TEA5767::PLL_LOCK_WAIT_MS
 )
 led.write(1)
+led.write(0)   # 初期化完了の瞬間点灯後，コマンド待ち状態に移る
 
 loop do
+  line = $stdin.gets
+  next if line.nil?   # nil になる条件は未確定（CDC 切断時等）．rescue 禁止のため next で継続する
+  next unless line.strip == "SCAN"   # コマンド名は web/app.rb の write("SCAN\n") と対応
+
+  led.write(1)
   peak_index = 0
   peak_rssi  = -1
 
@@ -57,6 +63,5 @@ loop do
     "f"    => START_HZ + STEP_HZ * peak_index,
     "rssi" => peak_rssi,
   })
-
-  sleep_ms(IDLE_MS)
+  led.write(0)
 end

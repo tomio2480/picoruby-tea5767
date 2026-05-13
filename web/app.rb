@@ -16,6 +16,7 @@ status_el        = document.getElementById("status")
 start_mock_btn   = document.getElementById("start-mock")
 connect_pico_btn = document.getElementById("connect-pico")
 scan_status_el   = document.getElementById("scan-status")
+scan_pico_btn    = document.getElementById("scan-pico")
 peak_tbody_el    = document.getElementById("peak-tbody")
 region_select_el = document.getElementById("region")
 
@@ -103,12 +104,14 @@ if directory
     end
   end
 
-  pico_client = nil
+  pico_client     = nil
+  current_handler = nil
 
   start_mock_btn.addEventListener("click") do
     next if start_mock_btn[:disabled].to_s == "true"
     start_mock_btn[:disabled]   = true
     connect_pico_btn[:disabled] = true
+    scan_pico_btn[:disabled]    = true
     pico_client&.close
     pico_client = nil
 
@@ -143,16 +146,15 @@ if directory
     next if connect_pico_btn[:disabled].to_s == "true"
     connect_pico_btn[:disabled] = true
     start_mock_btn[:disabled]   = true
+    scan_pico_btn[:disabled]    = true
 
     pico_client&.close
-    pico_client = nil
-
-    region_key = region_select_el[:value].to_s
+    pico_client     = nil
+    current_handler = nil
 
     scan_status_el[:textContent] = "Pico ポート選択中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">接続待ち</td></tr>"
 
-    aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
     client = SerialClient.new
     pico_client = client
 
@@ -161,6 +163,8 @@ if directory
       scan_status_el[:textContent] = "Pico 切断: #{message}"
       connect_pico_btn[:disabled]  = false
       start_mock_btn[:disabled]    = false
+      scan_pico_btn[:disabled]     = true
+      current_handler              = nil
       client.close
       pico_client = nil
     end
@@ -168,10 +172,11 @@ if directory
     client.request_and_open(
       on_ready: lambda do |c|
         next unless pico_client.equal?(client)
-        scan_status_el[:textContent] = "Pico 接続済み．受信中..."
-        peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">受信中...</td></tr>"
+        scan_status_el[:textContent] = "Pico 接続済み．スキャンボタンを押してください"
+        peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャンボタンを押してください</td></tr>"
         connect_pico_btn[:disabled]  = false
-        c.run(on_error: on_stream_end, &make_handler.call(aggregator, region_key, nil))
+        scan_pico_btn[:disabled]     = false
+        c.run(on_error: on_stream_end) { |msg| current_handler&.call(msg) }
       end,
       on_error: lambda do |message|
         next unless pico_client.equal?(client)
@@ -185,5 +190,29 @@ if directory
     scan_status_el[:textContent] = "接続準備エラー: #{e.message}"
     connect_pico_btn[:disabled] = false
     start_mock_btn[:disabled]   = false
+  end
+
+  scan_pico_btn.addEventListener("click") do
+    next if scan_pico_btn[:disabled].to_s == "true"
+    next if pico_client.nil?
+
+    scan_pico_btn[:disabled]     = true
+    scan_status_el[:textContent] = "スキャン中..."
+    peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
+
+    region_key = region_select_el[:value].to_s
+    aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
+
+    on_scan_done = lambda do
+      scan_pico_btn[:disabled] = false
+      current_handler          = nil
+    end
+
+    current_handler = make_handler.call(aggregator, region_key, on_scan_done)
+    pico_client.write("SCAN\n")   # コマンド名は firmware/app.rb の line.strip == "SCAN" と対応
+  rescue => e
+    scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
+    scan_pico_btn[:disabled]     = false
+    current_handler              = nil
   end
 end
