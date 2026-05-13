@@ -4,6 +4,8 @@
 # CRuby テストの対象外（I2C / sleep_ms などハードウェア API に依存）．
 #
 # 確定済みの PicoRuby / R2P2 API:
+#   - GPIO.new(pin, GPIO::OUT) ... picoruby-gpio
+#   - led.write(1) / led.write(0) ... HIGH / LOW 出力
 #   - I2C.new(unit: :RP2040_I2C0, sda_pin:, scl_pin:, frequency:) ... picoruby-i2c
 #   - i2c.write(addr, b1, b2, ..., bN) ... 可変長引数
 #   - i2c.read(addr, n) ... バイト列 String を返す．呼び出し側で .bytes して Array[Integer] 化
@@ -13,6 +15,7 @@
 # 注意: この R2P2 ビルドでは rescue（修飾子・begin/rescue/end ともに）は未サポート．
 #       Unimplemented opcode (0x56) が発生するため使用禁止．
 
+require "gpio"
 require "i2c"
 require "/home/lib/tea5767"
 require "/home/lib/spectrum_scanner"
@@ -23,6 +26,7 @@ STEP_HZ       = 100_000
 CHANNEL_COUNT = 191
 IDLE_MS       = 500
 
+led      = GPIO.new(25, GPIO::OUT)
 i2c      = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 receiver = TEA5767.new(i2c)
 emitter  = SerialEmitter.new($stdout)
@@ -33,6 +37,7 @@ scanner  = SpectrumScanner.new(
   CHANNEL_COUNT,
   TEA5767::PLL_LOCK_WAIT_MS
 )
+led.write(1)
 
 loop do
   peak_index = 0
