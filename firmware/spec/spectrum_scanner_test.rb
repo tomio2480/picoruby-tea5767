@@ -1,6 +1,13 @@
 require "minitest/autorun"
 require_relative "../lib/spectrum_scanner"
 
+# PicoRuby が提供する sleep_ms を CRuby のテスト用にスタブする．
+# 呼び出し回数と引数を $sleep_ms_calls で確認できる．
+$sleep_ms_calls = []
+def sleep_ms(ms)
+  $sleep_ms_calls << ms
+end
+
 class FakeReceiver
   attr_reader :tune_calls, :status_calls
 
@@ -23,16 +30,13 @@ class FakeReceiver
 end
 
 class SpectrumScannerTest < Minitest::Test
-  def build_scanner(count: 3, sleeper: ->(_ms) {}, wait_ms: 0)
+  def setup
+    $sleep_ms_calls = []
+  end
+
+  def build_scanner(count: 3, wait_ms: 0)
     @receiver = FakeReceiver.new
-    SpectrumScanner.new(
-      @receiver,
-      start_hz: 76_000_000,
-      step_hz:  100_000,
-      count:    count,
-      sleeper:  sleeper,
-      wait_ms:  wait_ms,
-    )
+    SpectrumScanner.new(@receiver, 76_000_000, 100_000, count, wait_ms)
   end
 
   def test_scanはcount回tuneを呼ぶ
@@ -64,29 +68,19 @@ class SpectrumScannerTest < Minitest::Test
     assert_equal [[0, 76_000_000, 0], [1, 76_100_000, 0]], received
   end
 
-  def test_sleeperは指定したwait_msで各chで呼ばれる
-    sleep_calls = []
-    sleeper = ->(ms) { sleep_calls << ms }
-    scanner = build_scanner(count: 3, sleeper: sleeper, wait_ms: 7)
+  def test_sleep_msは指定したwait_msで各chで呼ばれる
+    scanner = build_scanner(count: 3, wait_ms: 7)
     scanner.scan
 
-    assert_equal [7, 7, 7], sleep_calls
+    assert_equal [7, 7, 7], $sleep_ms_calls
   end
 
-  def test_wait_ms未指定時はsleeperが0で呼ばれる
-    sleep_calls = []
-    sleeper = ->(ms) { sleep_calls << ms }
+  def test_wait_ms未指定時はsleep_msが0で呼ばれる
     @receiver = FakeReceiver.new
-    scanner = SpectrumScanner.new(
-      @receiver,
-      start_hz: 76_000_000,
-      step_hz:  100_000,
-      count:    2,
-      sleeper:  sleeper,
-    )
+    scanner = SpectrumScanner.new(@receiver, 76_000_000, 100_000, 2)
     scanner.scan
 
-    assert_equal [0, 0], sleep_calls
+    assert_equal [0, 0], $sleep_ms_calls
   end
 
   def test_scanはブロックなしでも例外にならず完了する
