@@ -205,6 +205,7 @@ if directory
 
     on_scan_done = lambda do
       scan_pico_btn[:disabled] = false
+      current_handler          = nil
     end
 
     current_handler = make_handler.call(aggregator, region_key, on_scan_done)
@@ -212,5 +213,6 @@ if directory
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
     scan_pico_btn[:disabled]     = false
+    current_handler              = nil
   end
 end
