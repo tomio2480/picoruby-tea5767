@@ -21,12 +21,13 @@ require "/home/lib/tea5767"
 require "/home/lib/spectrum_scanner"
 require "/home/lib/serial_emitter"
 
+LED_PIN       = 25
 START_HZ      = 76_000_000
 STEP_HZ       = 100_000
 CHANNEL_COUNT = 191
 IDLE_MS       = 500
 
-led      = GPIO.new(25, GPIO::OUT)
+led      = GPIO.new(LED_PIN, GPIO::OUT)
 i2c      = I2C.new(unit: :RP2040_I2C0, sda_pin: 4, scl_pin: 5, frequency: 100_000)
 receiver = TEA5767.new(i2c)
 emitter  = SerialEmitter.new($stdout)
