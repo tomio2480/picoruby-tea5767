@@ -228,7 +228,7 @@ if directory
 
   canvas.addEventListener("click") do |event|
     next if is_scanning
-    next if last_rssi_array.nil?
+    next if last_rssi_array.nil? || last_named_labels.nil?
 
     rect     = canvas.call(:getBoundingClientRect)
     scale    = canvas[:width].to_f / rect[:width].to_f
@@ -243,7 +243,8 @@ if directory
     renderer.draw_bars(last_rssi_array, ch_index)
     renderer.draw_station_labels(last_named_labels)
 
-    scan_status_el[:textContent] = "選局: #{mhz_str} MHz"
+    label = last_named_labels.find { |l| l[:ch_index] == ch_index }
+    scan_status_el[:textContent] = "選局: #{mhz_str} MHz#{label ? " - #{label[:name]}" : ""}"
     pico_client&.write("TUNE:#{freq_hz}\n")
   end
 end

@@ -73,6 +73,7 @@ loop do
     next if freq_hz < START_HZ || freq_hz > START_HZ + STEP_HZ * (CHANNEL_COUNT - 1)
     receiver.tune(freq_hz)
     led.write(1)
+    sleep_ms(50)
     led.write(0)
   end
 end
