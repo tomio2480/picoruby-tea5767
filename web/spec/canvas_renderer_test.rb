@@ -15,6 +15,30 @@ class CanvasRendererTest < Minitest::Test
     CanvasRenderer.new(canvas, start_hz: 76_000_000, step_hz: 100_000, channel_count: channel_count)
   end
 
+  # fillRect 呼び出し時点の fillStyle を記録するスパイ付きレンダラーを返す
+  def make_renderer_with_color_spy(channel_count: 5)
+    colors = []
+    current_fill = nil
+    ctx = Object.new.tap do |obj|
+      obj.define_singleton_method(:[]) { |_k| nil }
+      obj.define_singleton_method(:[]=) do |k, v|
+        current_fill = v if k.to_s == "fillStyle"
+      end
+      obj.define_singleton_method(:call) do |method, *_args|
+        colors << current_fill if method.to_s == "fillRect"
+        nil
+      end
+    end
+    canvas = Object.new.tap do |obj|
+      obj.define_singleton_method(:[]) { |k| { "width" => 800, "height" => 300 }[k.to_s] }
+      obj.define_singleton_method(:call) { |*_args| ctx }
+    end
+    renderer = CanvasRenderer.new(canvas, start_hz: 76_000_000, step_hz: 100_000, channel_count: channel_count)
+    [renderer, colors]
+  end
+
+  # ---- x_to_ch_index ----
+
   def test_x_to_ch_index_最左端は0
     assert_equal 0, make_renderer.x_to_ch_index(0)
   end
@@ -36,5 +60,46 @@ class CanvasRendererTest < Minitest::Test
 
   def test_x_to_ch_index_幅を超えた座標は最大チャンネルにクランプ
     assert_equal 190, make_renderer.x_to_ch_index(9999)
+  end
+
+  # ---- draw_bars の色選択ロジック ----
+
+  def test_draw_bars_通常バーはBAR_COLOR
+    renderer, colors = make_renderer_with_color_spy
+    renderer.draw_bars([5] * 5)
+    assert_equal [CanvasRenderer::BAR_COLOR] * 5, colors
+  end
+
+  def test_draw_bars_cursor_indexのバーはCURSOR_COLOR
+    renderer, colors = make_renderer_with_color_spy
+    renderer.draw_bars([5] * 5, 2)
+    expected = [CanvasRenderer::BAR_COLOR, CanvasRenderer::BAR_COLOR,
+                CanvasRenderer::CURSOR_COLOR,
+                CanvasRenderer::BAR_COLOR, CanvasRenderer::BAR_COLOR]
+    assert_equal expected, colors
+  end
+
+  def test_draw_bars_hover_indexのバーはHOVER_COLOR
+    renderer, colors = make_renderer_with_color_spy
+    renderer.draw_bars([5] * 5, nil, 1)
+    expected = [CanvasRenderer::BAR_COLOR, CanvasRenderer::HOVER_COLOR,
+                CanvasRenderer::BAR_COLOR, CanvasRenderer::BAR_COLOR, CanvasRenderer::BAR_COLOR]
+    assert_equal expected, colors
+  end
+
+  def test_draw_bars_cursor_indexとhover_indexが重なった場合はCURSOR_COLORが優先
+    renderer, colors = make_renderer_with_color_spy
+    renderer.draw_bars([5] * 5, 3, 3)
+    expected = [CanvasRenderer::BAR_COLOR, CanvasRenderer::BAR_COLOR,
+                CanvasRenderer::BAR_COLOR, CanvasRenderer::CURSOR_COLOR, CanvasRenderer::BAR_COLOR]
+    assert_equal expected, colors
+  end
+
+  def test_draw_bars_cursor_indexとhover_indexが別々に設定される
+    renderer, colors = make_renderer_with_color_spy
+    renderer.draw_bars([5] * 5, 1, 3)
+    expected = [CanvasRenderer::BAR_COLOR, CanvasRenderer::CURSOR_COLOR,
+                CanvasRenderer::BAR_COLOR, CanvasRenderer::HOVER_COLOR, CanvasRenderer::BAR_COLOR]
+    assert_equal expected, colors
   end
 end

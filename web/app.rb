@@ -49,9 +49,11 @@ if directory
   status_el[:textContent] = "Ruby.wasm 起動成功: Ruby #{RUBY_VERSION}"
   status_el[:className]   = "status ok"
 
-  is_scanning       = false
-  last_rssi_array   = nil
-  last_named_labels = nil
+  is_scanning        = false
+  last_rssi_array    = nil
+  last_named_labels  = nil
+  selected_ch_index  = nil
+  last_hover_ch      = nil
 
   finalize_scan = lambda do |aggregator, region_key|
     rssi_array = aggregator.pixels
@@ -68,6 +70,8 @@ if directory
       }
     end
 
+    selected_ch_index = nil
+    last_hover_ch     = nil
     renderer.clear
     renderer.draw_axis
     renderer.draw_bars(rssi_array)
@@ -235,16 +239,46 @@ if directory
     canvas_x = (event[:clientX].to_f - rect[:left].to_f) * scale
     ch_index = renderer.x_to_ch_index(canvas_x)
 
+    selected_ch_index = ch_index
     freq_hz = START_HZ + STEP_HZ * ch_index
     mhz_str = format("%.1f", freq_hz / 1_000_000.0)
 
     renderer.clear
     renderer.draw_axis
-    renderer.draw_bars(last_rssi_array, ch_index)
+    renderer.draw_bars(last_rssi_array, selected_ch_index)
     renderer.draw_station_labels(last_named_labels)
 
     label = last_named_labels.find { |l| l[:ch_index] == ch_index }
     scan_status_el[:textContent] = "選局: #{mhz_str} MHz#{label ? " - #{label[:name]}" : ""}"
     pico_client&.write("TUNE:#{freq_hz}\n")
+  end
+
+  canvas.addEventListener("mousemove") do |event|
+    next if is_scanning
+    next if last_rssi_array.nil? || last_named_labels.nil?
+
+    rect     = canvas.call(:getBoundingClientRect)
+    scale    = canvas[:width].to_f / rect[:width].to_f
+    canvas_x = (event[:clientX].to_f - rect[:left].to_f) * scale
+    hover_ch = renderer.x_to_ch_index(canvas_x)
+
+    next if hover_ch == last_hover_ch
+
+    last_hover_ch = hover_ch
+    renderer.clear
+    renderer.draw_axis
+    renderer.draw_bars(last_rssi_array, selected_ch_index, hover_ch)
+    renderer.draw_station_labels(last_named_labels)
+  end
+
+  canvas.addEventListener("mouseleave") do |_event|
+    next if is_scanning
+    next if last_rssi_array.nil? || last_named_labels.nil?
+
+    last_hover_ch = nil
+    renderer.clear
+    renderer.draw_axis
+    renderer.draw_bars(last_rssi_array, selected_ch_index)
+    renderer.draw_station_labels(last_named_labels)
   end
 end

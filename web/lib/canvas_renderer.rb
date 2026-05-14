@@ -3,6 +3,7 @@ require "js"
 class CanvasRenderer
   BACKGROUND_COLOR = "#0B1020"
   BAR_COLOR        = "#66CCFF"
+  HOVER_COLOR      = "#CCEEFF"
   CURSOR_COLOR     = "#FFD166"
   AXIS_COLOR       = "#DDDDDD"
   LABEL_BG_COLOR   = "#FFFFFF"
@@ -61,13 +62,19 @@ class CanvasRenderer
     end
   end
 
-  def draw_bars(rssi_array, cursor_index = nil)
+  def draw_bars(rssi_array, cursor_index = nil, hover_index = nil)
     bar_area_h = @height - AXIS_HEIGHT - BAR_BOTTOM_PAD
     rssi_array.each_with_index do |rssi, i|
       x = ch_left_x(i)
       h = (rssi.to_f / 15.0) * bar_area_h
       y = @height - h - BAR_BOTTOM_PAD
-      @ctx[:fillStyle] = (i == cursor_index ? CURSOR_COLOR : BAR_COLOR)
+      @ctx[:fillStyle] = if i == cursor_index
+        CURSOR_COLOR
+      elsif i == hover_index
+        HOVER_COLOR
+      else
+        BAR_COLOR
+      end
       w = [bar_width - 0.6, 1.0].max
       @ctx.call(:fillRect, x, y, w, h)
     end
