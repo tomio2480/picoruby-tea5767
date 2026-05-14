@@ -75,5 +75,10 @@ loop do
     led.write(1)
     sleep_ms(50)
     led.write(0)
+  when "MUTE"
+    receiver.mute
+    led.write(1)
+    sleep_ms(50)
+    led.write(0)
   end
 end
