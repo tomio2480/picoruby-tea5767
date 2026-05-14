@@ -49,6 +49,12 @@ if directory
   status_el[:textContent] = "Ruby.wasm 起動成功: Ruby #{RUBY_VERSION}"
   status_el[:className]   = "status ok"
 
+  is_scanning        = false
+  last_rssi_array    = nil
+  last_named_labels  = nil
+  selected_ch_index  = nil
+  last_hover_ch      = nil
+
   finalize_scan = lambda do |aggregator, region_key|
     rssi_array = aggregator.pixels
     peaks = PeakDetector.detect(rssi_array, threshold: PEAK_THRESHOLD)
@@ -64,12 +70,14 @@ if directory
       }
     end
 
+    selected_ch_index = nil
+    last_hover_ch     = nil
     renderer.clear
     renderer.draw_axis
     renderer.draw_bars(rssi_array)
-    renderer.draw_station_labels(
-      named.map { |p| { ch_index: p[:ch_index], name: p[:name] } }
-    )
+    last_rssi_array   = rssi_array
+    last_named_labels = named.map { |p| { ch_index: p[:ch_index], name: p[:name] } }
+    renderer.draw_station_labels(last_named_labels)
 
     rows = named.sort_by { |p| -p[:rssi] }.map do |p|
       mhz = format("%.1f", p[:freq_hz] / 1_000_000.0)
@@ -118,6 +126,7 @@ if directory
     region_key = region_select_el[:value].to_s
     station_freqs_khz = directory.stations(region_key).map { |s| s["freq_khz"] }
 
+    is_scanning                  = true
     scan_status_el[:textContent] = "モックスキャン中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
 
@@ -132,14 +141,16 @@ if directory
     stream = MockStream.new(source, start_hz: START_HZ, step_hz: STEP_HZ)
 
     on_finish = lambda do
-      start_mock_btn[:disabled]   = false
-      connect_pico_btn[:disabled] = false
+      is_scanning                  = false
+      start_mock_btn[:disabled]    = false
+      connect_pico_btn[:disabled]  = false
     end
     stream.run(&make_handler.call(aggregator, region_key, on_finish))
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
-    start_mock_btn[:disabled]   = false
-    connect_pico_btn[:disabled] = false
+    is_scanning                  = false
+    start_mock_btn[:disabled]    = false
+    connect_pico_btn[:disabled]  = false
   end
 
   connect_pico_btn.addEventListener("click") do
@@ -196,6 +207,7 @@ if directory
     next if scan_pico_btn[:disabled].to_s == "true"
     next if pico_client.nil?
 
+    is_scanning                  = true
     scan_pico_btn[:disabled]     = true
     scan_status_el[:textContent] = "スキャン中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
@@ -204,6 +216,7 @@ if directory
     aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
 
     on_scan_done = lambda do
+      is_scanning              = false
       scan_pico_btn[:disabled] = false
       current_handler          = nil
     end
@@ -212,7 +225,57 @@ if directory
     pico_client.write("SCAN\n")   # コマンド名は firmware/app.rb の line.strip == "SCAN" と対応
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
+    is_scanning                  = false
     scan_pico_btn[:disabled]     = false
     current_handler              = nil
+  end
+
+  refresh_canvas = lambda do
+    renderer.clear
+    renderer.draw_axis
+    renderer.draw_bars(last_rssi_array, selected_ch_index, last_hover_ch)
+    renderer.draw_station_labels(last_named_labels)
+  end
+
+  canvas.addEventListener("click") do |event|
+    next if is_scanning
+    next if last_rssi_array.nil? || last_named_labels.nil?
+
+    rect     = canvas.call(:getBoundingClientRect)
+    scale    = canvas[:width].to_f / rect[:width].to_f
+    canvas_x = (event[:clientX].to_f - rect[:left].to_f) * scale
+    ch_index = renderer.x_to_ch_index(canvas_x)
+
+    selected_ch_index = ch_index
+    refresh_canvas.call
+
+    freq_hz = START_HZ + STEP_HZ * ch_index
+    mhz_str = format("%.1f", freq_hz / 1_000_000.0)
+    label   = last_named_labels.find { |l| l[:ch_index] == ch_index }
+    scan_status_el[:textContent] = "選局: #{mhz_str} MHz#{label ? " - #{label[:name]}" : ""}"
+    pico_client&.write("TUNE:#{freq_hz}\n")
+  end
+
+  canvas.addEventListener("mousemove") do |event|
+    next if is_scanning
+    next if last_rssi_array.nil? || last_named_labels.nil?
+
+    rect     = canvas.call(:getBoundingClientRect)
+    scale    = canvas[:width].to_f / rect[:width].to_f
+    canvas_x = (event[:clientX].to_f - rect[:left].to_f) * scale
+    hover_ch = renderer.x_to_ch_index(canvas_x)
+
+    next if hover_ch == last_hover_ch
+
+    last_hover_ch = hover_ch
+    refresh_canvas.call
+  end
+
+  canvas.addEventListener("mouseleave") do |_event|
+    next if is_scanning
+    next if last_rssi_array.nil? || last_named_labels.nil?
+
+    last_hover_ch = nil
+    refresh_canvas.call
   end
 end
