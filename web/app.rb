@@ -124,6 +124,7 @@ if directory
     start_mock_btn[:disabled]   = true
     connect_pico_btn[:disabled] = true
     scan_pico_btn[:disabled]    = true
+    stop_btn[:disabled]         = true
     pico_client&.close
     pico_client = nil
 
@@ -176,9 +177,11 @@ if directory
     on_stream_end = lambda do |message|
       next unless pico_client.equal?(client)
       scan_status_el[:textContent] = "Pico 切断: #{message}"
+      is_scanning                  = false
       connect_pico_btn[:disabled]  = false
       start_mock_btn[:disabled]    = false
       scan_pico_btn[:disabled]     = true
+      stop_btn[:disabled]          = true
       current_handler              = nil
       client.close
       pico_client = nil
@@ -213,6 +216,7 @@ if directory
 
     is_scanning                  = true
     scan_pico_btn[:disabled]     = true
+    stop_btn[:disabled]          = true
     scan_status_el[:textContent] = "スキャン中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
 

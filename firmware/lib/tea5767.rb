@@ -12,23 +12,33 @@ class TEA5767
   end
 
   def initialize(i2c)
-    @i2c = i2c
+    @i2c      = i2c
+    @last_pll = self.class.pll_for(76_000_000)  # 初期値: バンド最低周波数
   end
 
   def tune(freq_hz)
-    pll = self.class.pll_for(freq_hz)
+    @last_pll = self.class.pll_for(freq_hz)
     @i2c.write(
       ADDRESS,
-      (pll >> 8) & 0x3F,   # MUTE=0, SM=0, PLL[13:8]
-      pll & 0xFF,           # PLL[7:0]
-      0b1011_0000,          # SUD=1, SSL=01, HLSI=1, MS=0
-      0b0001_0000,          # XTAL=1
-      0b0000_0000,          # PLLREF=0, DTC=0 (50 μs)
+      (@last_pll >> 8) & 0x3F,   # MUTE=0, SM=0, PLL[13:8]
+      @last_pll & 0xFF,            # PLL[7:0]
+      0b1011_0000,                 # SUD=1, SSL=01, HLSI=1, MS=0
+      0b0001_0000,                 # XTAL=1
+      0b0000_0000,                 # PLLREF=0, DTC=0 (50 μs)
     )
   end
 
+  # MUTE ビットを立てつつ最後の PLL 値を保持する．
+  # PLL=0 を送ると TEA5767 が異常状態になるため @last_pll を使う．
   def mute
-    @i2c.write(ADDRESS, 0x80, 0x00, 0b1011_0000, 0b0001_0000, 0b0000_0000)
+    @i2c.write(
+      ADDRESS,
+      ((@last_pll >> 8) & 0x3F) | 0x80,   # MUTE=1, PLL[13:8]
+      @last_pll & 0xFF,                     # PLL[7:0]
+      0b1011_0000,                          # SUD=1, SSL=01, HLSI=1, MS=0
+      0b0001_0000,                          # XTAL=1
+      0b0000_0000,                          # PLLREF=0, DTC=0 (50 μs)
+    )
   end
 
   def status
