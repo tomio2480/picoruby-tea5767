@@ -17,6 +17,7 @@ start_mock_btn   = document.getElementById("start-mock")
 connect_pico_btn = document.getElementById("connect-pico")
 scan_status_el   = document.getElementById("scan-status")
 scan_pico_btn    = document.getElementById("scan-pico")
+stop_btn         = document.getElementById("stop-btn")
 peak_tbody_el    = document.getElementById("peak-tbody")
 region_select_el = document.getElementById("region")
 
@@ -50,6 +51,7 @@ if directory
   status_el[:className]   = "status ok"
 
   is_scanning        = false
+  is_stopped         = false
   last_rssi_array    = nil
   last_named_labels  = nil
   selected_ch_index  = nil
@@ -70,8 +72,10 @@ if directory
       }
     end
 
-    selected_ch_index = nil
-    last_hover_ch     = nil
+    selected_ch_index  = nil
+    last_hover_ch      = nil
+    is_stopped         = false
+    stop_btn[:disabled] = true
     renderer.clear
     renderer.draw_axis
     renderer.draw_bars(rssi_array)
@@ -237,6 +241,14 @@ if directory
     renderer.draw_station_labels(last_named_labels)
   end
 
+  stop_btn.addEventListener("click") do
+    next if stop_btn[:disabled].to_s == "true"
+    is_stopped          = true
+    stop_btn[:disabled] = true
+    scan_status_el[:textContent] = "受信停止中"
+    pico_client&.write("MUTE\n")
+  end
+
   canvas.addEventListener("click") do |event|
     next if is_scanning
     next if last_rssi_array.nil? || last_named_labels.nil?
@@ -246,7 +258,9 @@ if directory
     canvas_x = (event[:clientX].to_f - rect[:left].to_f) * scale
     ch_index = renderer.x_to_ch_index(canvas_x)
 
-    selected_ch_index = ch_index
+    selected_ch_index  = ch_index
+    is_stopped         = false
+    stop_btn[:disabled] = pico_client ? false : true
     refresh_canvas.call
 
     freq_hz = START_HZ + STEP_HZ * ch_index

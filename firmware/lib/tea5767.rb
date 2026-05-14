@@ -27,6 +27,10 @@ class TEA5767
     )
   end
 
+  def mute
+    @i2c.write(ADDRESS, 0x80, 0x00, 0b1011_0000, 0b0001_0000, 0b0000_0000)
+  end
+
   def status
     res = @i2c.read(ADDRESS, 5)
     return { ready: false, stereo: false, rssi: 0 } if res.to_s.length < 5
