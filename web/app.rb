@@ -230,6 +230,13 @@ if directory
     current_handler              = nil
   end
 
+  refresh_canvas = lambda do
+    renderer.clear
+    renderer.draw_axis
+    renderer.draw_bars(last_rssi_array, selected_ch_index, last_hover_ch)
+    renderer.draw_station_labels(last_named_labels)
+  end
+
   canvas.addEventListener("click") do |event|
     next if is_scanning
     next if last_rssi_array.nil? || last_named_labels.nil?
@@ -240,15 +247,11 @@ if directory
     ch_index = renderer.x_to_ch_index(canvas_x)
 
     selected_ch_index = ch_index
+    refresh_canvas.call
+
     freq_hz = START_HZ + STEP_HZ * ch_index
     mhz_str = format("%.1f", freq_hz / 1_000_000.0)
-
-    renderer.clear
-    renderer.draw_axis
-    renderer.draw_bars(last_rssi_array, selected_ch_index)
-    renderer.draw_station_labels(last_named_labels)
-
-    label = last_named_labels.find { |l| l[:ch_index] == ch_index }
+    label   = last_named_labels.find { |l| l[:ch_index] == ch_index }
     scan_status_el[:textContent] = "選局: #{mhz_str} MHz#{label ? " - #{label[:name]}" : ""}"
     pico_client&.write("TUNE:#{freq_hz}\n")
   end
@@ -265,10 +268,7 @@ if directory
     next if hover_ch == last_hover_ch
 
     last_hover_ch = hover_ch
-    renderer.clear
-    renderer.draw_axis
-    renderer.draw_bars(last_rssi_array, selected_ch_index, hover_ch)
-    renderer.draw_station_labels(last_named_labels)
+    refresh_canvas.call
   end
 
   canvas.addEventListener("mouseleave") do |_event|
@@ -276,9 +276,6 @@ if directory
     next if last_rssi_array.nil? || last_named_labels.nil?
 
     last_hover_ch = nil
-    renderer.clear
-    renderer.draw_axis
-    renderer.draw_bars(last_rssi_array, selected_ch_index)
-    renderer.draw_station_labels(last_named_labels)
+    refresh_canvas.call
   end
 end
