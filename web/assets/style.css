@@ -123,6 +123,7 @@ button:disabled {
   color: var(--muted);
   font-family: "Consolas", "SF Mono", monospace;
   font-size: 0.9rem;
+  margin: 0.5rem 0 0;
 }
 
 #peak-table {
@@ -144,6 +145,36 @@ button:disabled {
 
 #peak-table tbody tr:nth-child(even) {
   background: #FAFAFA;
+}
+
+.rssi-guide-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 1.5rem 0 0.25rem;
+}
+
+.rssi-guide {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.rssi-guide th,
+.rssi-guide td {
+  padding: 0.3rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  color: var(--muted);
+}
+
+.rssi-guide th {
+  background: #F5F5F5;
+  font-weight: bold;
+}
+
+.rssi-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0;
 }
 
 footer {
