@@ -54,35 +54,31 @@ if directory
   is_stopped         = false
   last_rssi_array    = nil
   last_named_labels  = nil
+  last_peaks         = nil
   selected_ch_index  = nil
   last_hover_ch      = nil
 
-  finalize_scan = lambda do |aggregator, region_key|
-    rssi_array = aggregator.pixels
-    peaks = PeakDetector.detect(rssi_array, threshold: PEAK_THRESHOLD)
-    named = peaks.map do |peak|
-      freq_hz = START_HZ + STEP_HZ * peak[:i]
-      station = directory.lookup(region_key, freq_hz)
+  refresh_canvas = lambda do
+    renderer.clear
+    renderer.draw_axis
+    renderer.draw_bars(last_rssi_array, selected_ch_index, last_hover_ch)
+    renderer.draw_station_labels(last_named_labels)
+  end
+
+  relabel = lambda do |region_key|
+    return if last_peaks.nil?
+    named = last_peaks.map do |peak|
+      station = directory.lookup(region_key, peak[:freq_hz])
       {
-        ch_index: peak[:i],
-        freq_hz:  freq_hz,
+        ch_index: peak[:ch_index],
+        freq_hz:  peak[:freq_hz],
         rssi:     peak[:rssi],
         name:     station ? station["name"] : "(未登録)",
         kind:     station ? station["kind"] : nil,
       }
     end
-
-    selected_ch_index  = nil
-    last_hover_ch      = nil
-    is_stopped         = false
-    stop_btn[:disabled] = true
-    renderer.clear
-    renderer.draw_axis
-    renderer.draw_bars(rssi_array)
-    last_rssi_array   = rssi_array
     last_named_labels = named.map { |p| { ch_index: p[:ch_index], name: p[:name] } }
-    renderer.draw_station_labels(last_named_labels)
-
+    refresh_canvas.call
     rows = named.sort_by { |p| -p[:rssi] }.map do |p|
       mhz = format("%.1f", p[:freq_hz] / 1_000_000.0)
       "<tr><td>#{mhz} MHz</td><td>#{p[:rssi]}/15</td><td>#{html_escape(p[:name])}</td></tr>"
@@ -91,7 +87,23 @@ if directory
     scan_status_el[:textContent] = "完了 (#{named.size} 局検出)"
   end
 
-  make_handler = lambda do |aggregator, region_key, on_finish|
+  finalize_scan = lambda do |aggregator|
+    rssi_array = aggregator.pixels
+    peaks      = PeakDetector.detect(rssi_array, threshold: PEAK_THRESHOLD)
+    last_peaks = peaks.map do |peak|
+      freq_hz = START_HZ + STEP_HZ * peak[:i]
+      { ch_index: peak[:i], freq_hz: freq_hz, rssi: peak[:rssi] }
+    end
+
+    selected_ch_index   = nil
+    last_hover_ch       = nil
+    is_stopped          = false
+    stop_btn[:disabled] = true
+    last_rssi_array     = rssi_array
+    relabel.call(region_select_el[:value].to_s)
+  end
+
+  make_handler = lambda do |aggregator, on_finish|
     lambda do |msg|
       case msg["t"]
       when "tick"
@@ -102,7 +114,7 @@ if directory
         renderer.draw_bars(aggregator.pixels, msg["i"])
         scan_status_el[:textContent] = "スキャン中: #{msg["i"] + 1}/#{CHANNEL_COUNT} ch"
       when "done"
-        finalize_scan.call(aggregator, region_key)
+        finalize_scan.call(aggregator)
         on_finish&.call
       when "error"
         scan_status_el[:textContent] = "受信エラー: #{msg["msg"]}"
@@ -150,7 +162,7 @@ if directory
       start_mock_btn[:disabled]    = false
       connect_pico_btn[:disabled]  = false
     end
-    stream.run(&make_handler.call(aggregator, region_key, on_finish))
+    stream.run(&make_handler.call(aggregator, on_finish))
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
     is_scanning                  = false
@@ -220,7 +232,6 @@ if directory
     scan_status_el[:textContent] = "スキャン中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
 
-    region_key = region_select_el[:value].to_s
     aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
 
     on_scan_done = lambda do
@@ -229,7 +240,7 @@ if directory
       current_handler          = nil
     end
 
-    current_handler = make_handler.call(aggregator, region_key, on_scan_done)
+    current_handler = make_handler.call(aggregator, on_scan_done)
     pico_client.write("SCAN\n")   # コマンド名は firmware/app.rb の line.strip == "SCAN" と対応
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
@@ -238,11 +249,9 @@ if directory
     current_handler              = nil
   end
 
-  refresh_canvas = lambda do
-    renderer.clear
-    renderer.draw_axis
-    renderer.draw_bars(last_rssi_array, selected_ch_index, last_hover_ch)
-    renderer.draw_station_labels(last_named_labels)
+  region_select_el.addEventListener("change") do
+    next if is_scanning
+    relabel.call(region_select_el[:value].to_s)
   end
 
   stop_btn.addEventListener("click") do
