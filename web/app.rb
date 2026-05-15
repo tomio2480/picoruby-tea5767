@@ -87,7 +87,7 @@ if directory
     scan_status_el[:textContent] = "完了 (#{named.size} 局検出)"
   end
 
-  finalize_scan = lambda do |aggregator, region_key|
+  finalize_scan = lambda do |aggregator|
     rssi_array = aggregator.pixels
     peaks      = PeakDetector.detect(rssi_array, threshold: PEAK_THRESHOLD)
     last_peaks = peaks.map do |peak|
@@ -100,10 +100,10 @@ if directory
     is_stopped          = false
     stop_btn[:disabled] = true
     last_rssi_array     = rssi_array
-    relabel.call(region_key)
+    relabel.call(region_select_el[:value].to_s)
   end
 
-  make_handler = lambda do |aggregator, region_key, on_finish|
+  make_handler = lambda do |aggregator, on_finish|
     lambda do |msg|
       case msg["t"]
       when "tick"
@@ -114,7 +114,7 @@ if directory
         renderer.draw_bars(aggregator.pixels, msg["i"])
         scan_status_el[:textContent] = "スキャン中: #{msg["i"] + 1}/#{CHANNEL_COUNT} ch"
       when "done"
-        finalize_scan.call(aggregator, region_key)
+        finalize_scan.call(aggregator)
         on_finish&.call
       when "error"
         scan_status_el[:textContent] = "受信エラー: #{msg["msg"]}"
@@ -162,7 +162,7 @@ if directory
       start_mock_btn[:disabled]    = false
       connect_pico_btn[:disabled]  = false
     end
-    stream.run(&make_handler.call(aggregator, region_key, on_finish))
+    stream.run(&make_handler.call(aggregator, on_finish))
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
     is_scanning                  = false
@@ -232,7 +232,6 @@ if directory
     scan_status_el[:textContent] = "スキャン中..."
     peak_tbody_el[:innerHTML]    = "<tr><td colspan=\"3\">スキャン中...</td></tr>"
 
-    region_key = region_select_el[:value].to_s
     aggregator = Aggregator.new(channel_count: CHANNEL_COUNT, pixel_count: CHANNEL_COUNT)
 
     on_scan_done = lambda do
@@ -241,7 +240,7 @@ if directory
       current_handler          = nil
     end
 
-    current_handler = make_handler.call(aggregator, region_key, on_scan_done)
+    current_handler = make_handler.call(aggregator, on_scan_done)
     pico_client.write("SCAN\n")   # コマンド名は firmware/app.rb の line.strip == "SCAN" と対応
   rescue => e
     scan_status_el[:textContent] = "スキャン準備エラー: #{e.message}"
@@ -251,6 +250,7 @@ if directory
   end
 
   region_select_el.addEventListener("change") do
+    next if is_scanning
     relabel.call(region_select_el[:value].to_s)
   end
 
