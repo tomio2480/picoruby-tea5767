@@ -3,8 +3,8 @@
 ## 要約
 
 `stations.json` にリージョンを追加しても `index.html` の `<select>` に反映されない
-二重管理問題を発見した．`app.rb` 起動時に `StationDirectory#regions` /
-`#region_name` を使ってドロップダウンを動的生成する方針に変更した．
+二重管理問題を発見した．`app.rb` 起動時に `StationDirectory#regions` / `#region_name`
+を使ってドロップダウンを動的生成する方針に変更した．
 あわせて，Ruby.wasm で `nil` を JS プロパティに代入すると `"null"` 等の文字列が
 現れる場合があることを Gemini レビューで学んだ．
 
