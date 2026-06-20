@@ -50,6 +50,13 @@ if directory
   status_el[:textContent] = "Ruby.wasm 起動成功: Ruby #{RUBY_VERSION}"
   status_el[:className]   = "status ok"
 
+  directory.regions.each do |key|
+    opt = document.call(:createElement, "option")
+    opt[:value]       = key
+    opt[:textContent] = directory.region_name(key)
+    region_select_el.call(:appendChild, opt)
+  end
+
   is_scanning        = false
   is_stopped         = false
   last_rssi_array    = nil
