@@ -24,8 +24,8 @@
       <button type="button" id="connect-pico">Pico に接続</button>
       <button type="button" id="scan-pico" disabled>スキャン実行</button>
       <button type="button" id="stop-btn" disabled>受信停止</button>
-      <span id="scan-status">待機中</span>
     </p>
+    <p id="scan-status">待機中</p>
   </section>
 
   <section id="spectrum-section">
@@ -43,6 +43,20 @@
         <tr><td colspan="3">スキャン未実行</td></tr>
       </tbody>
     </table>
+    <p class="rssi-guide-label">RSSI 目安表（参考値）</p>
+    <table class="rssi-guide">
+      <thead>
+        <tr><th>RSSI</th><th>目安 (dBµV)</th><th>受信状況</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>9.5</td><td>ほぼ無信号</td></tr>
+        <tr><td>4</td><td>21.5</td><td>弱</td></tr>
+        <tr><td>8</td><td>33.5</td><td>中</td></tr>
+        <tr><td>11</td><td>42.5</td><td>良好</td></tr>
+        <tr><td>15</td><td>54.5</td><td>非常に良好</td></tr>
+      </tbody>
+    </table>
+    <p class="rssi-note">TEA5767 の設計値（9.5〜54.5 dBµV，3.0 dB 刻み）を基にした概算値．正確な RF dBµV 計測値ではない．<a href="https://www.rockbox.org/tracker/8151" target="_blank" rel="noopener">参照: Rockbox FS#8151</a></p>
   </section>
 
   <section id="status-section">
