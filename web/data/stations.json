@@ -160,6 +160,68 @@
         }
       ]
     },
+    "nopporo": {
+      "name": "野幌（江別市）",
+      "prefecture": "北海道",
+      "stations": [
+        {
+          "freq_khz": 76500,
+          "name": "FMアップル（エフエムとよひら）",
+          "kind": "community",
+          "power_w": 20,
+          "site": "札幌市豊平区",
+          "note": "JOZZ1AJ-FM．放送エリアに江別市を含む"
+        },
+        {
+          "freq_khz": 77600,
+          "name": "FMドラマシティ（Radio YAMASHO）",
+          "kind": "community",
+          "power_w": 20,
+          "site": "札幌市厚別区",
+          "note": "JOZZ1AQ-FM．野幌周辺（場所による）で受信可"
+        },
+        {
+          "freq_khz": 80400,
+          "name": "AIR-G'（FM 北海道）",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "FM 北海道 札幌局"
+        },
+        {
+          "freq_khz": 82500,
+          "name": "FM NORTH WAVE",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "FM ノースウェーブ 札幌局"
+        },
+        {
+          "freq_khz": 85200,
+          "name": "NHK-FM 札幌",
+          "kind": "fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "JOAS-FM"
+        },
+        {
+          "freq_khz": 90400,
+          "name": "STV ラジオ（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "STV ラジオ FM 補完放送"
+        },
+        {
+          "freq_khz": 91500,
+          "name": "HBC ラジオ（ワイドFM）",
+          "kind": "wide_fm",
+          "power_w": 5000,
+          "site": "札幌（手稲山）",
+          "note": "HBC ラジオ FM 補完放送"
+        }
+      ]
+    },
     "tokyo": {
       "name": "東京（23 区）",
       "prefecture": "東京都",
