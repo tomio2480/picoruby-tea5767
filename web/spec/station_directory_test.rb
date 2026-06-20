@@ -70,6 +70,16 @@ class StationDirectoryTest < Minitest::Test
     dir = StationDirectory.new(FIXTURE)
     assert_nil dir.lookup("sapporo", 80_700_000)
   end
+
+  def test_region_nameはキーに対応する表示名を返す
+    dir = StationDirectory.new(FIXTURE)
+    assert_equal "函館市", dir.region_name("hakodate")
+  end
+
+  def test_存在しないキーのregion_nameはnil
+    dir = StationDirectory.new(FIXTURE)
+    assert_nil dir.region_name("unknown")
+  end
 end
 
 class StationDirectoryDataTest < Minitest::Test

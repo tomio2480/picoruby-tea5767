@@ -9,6 +9,10 @@ class StationDirectory
     @data.fetch("regions").keys
   end
 
+  def region_name(region_key)
+    @data.dig("regions", region_key, "name")
+  end
+
   def stations(region_key)
     @data.dig("regions", region_key, "stations") || []
   end
