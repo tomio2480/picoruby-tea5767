@@ -53,7 +53,7 @@ if directory
   directory.regions.each do |key|
     opt = document.call(:createElement, "option")
     opt[:value]       = key
-    opt[:textContent] = directory.region_name(key)
+    opt[:textContent] = directory.region_name(key) || key
     region_select_el.call(:appendChild, opt)
   end
 
