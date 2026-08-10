@@ -37,11 +37,11 @@ jobs:
     steps:
       - name: Checkout
         # actions/checkout v4.3.0
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       - name: Markdown Lint via composite action
         # github-workflows v2.3.0（composite action）への参照．SHA は v2.3.0 タグが指す merge commit．
-        uses: tomio2480/github-workflows/.github/actions/markdown-lint@d0f0be22a342656af9a8ae6fab65fe477d091cd3 # v2.5.10
+        uses: tomio2480/github-workflows/.github/actions/markdown-lint@20a93b5ca42235c26c13e742ccfcdee2ac999b99 # v2.6.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # 必要に応じて inputs で上書き可能．詳細は中央リポジトリの README を参照．
