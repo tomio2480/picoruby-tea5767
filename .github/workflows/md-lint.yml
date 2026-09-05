@@ -41,7 +41,7 @@ jobs:
 
       - name: Markdown Lint via composite action
         # github-workflows v2.3.0（composite action）への参照．SHA は v2.3.0 タグが指す merge commit．
-        uses: tomio2480/github-workflows/.github/actions/markdown-lint@be0dcd788482ef8805d298f218cf76a124aa04d7 # v2.6.2
+        uses: tomio2480/github-workflows/.github/actions/markdown-lint@b13ed43dd83fd9bebc651d8e8e8327e3e907a628 # v2.14.4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           # 必要に応じて inputs で上書き可能．詳細は中央リポジトリの README を参照．
