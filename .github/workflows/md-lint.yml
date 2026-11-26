@@ -36,11 +36,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        # actions/checkout v4.3.0
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Markdown Lint via composite action
-        # github-workflows v2.3.0（composite action）への参照．SHA は v2.3.0 タグが指す merge commit．
+        # github-workflows の composite action への参照．版は行末のコメントに書き，Dependabot が SHA と共に更新する．
         uses: tomio2480/github-workflows/.github/actions/markdown-lint@0abe714b46004441d0f4ab27bacbb7f4cc3fddf9 # v2.23.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
